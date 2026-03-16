@@ -4,7 +4,7 @@ from django.contrib.contenttypes.fields import GenericForeignKey
 from django.contrib.contenttypes.models import ContentType
 
 
-class SyncFile(models.Model):
+class SyncData(models.Model):
     """Tracks synchronization status of gallery media to cloud storage."""
     STATUS_CHOICES = [
         ('PENDING', 'Pending'),

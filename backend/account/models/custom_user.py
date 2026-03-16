@@ -4,7 +4,7 @@ from django.db.models.signals import post_save
 from django.dispatch import receiver
 from datetime import timedelta
 from django.utils import timezone
-from .models import Country, State, City
+from account.models import Country, State, City
 
 
 def upload_location(instance, filename):
