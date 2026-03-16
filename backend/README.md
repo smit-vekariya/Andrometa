@@ -5,6 +5,8 @@
 - redis-cli -p 6379
 - celery -A backend beat -l INFO --scheduler django_celery_beat.schedulers:DatabaseScheduler
 
+- daphne -b 0.0.0.0 -p 8000 backend.asgi:application
+
 
 # docker command:
 

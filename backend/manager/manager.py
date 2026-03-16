@@ -37,7 +37,7 @@ def custom_exception_handler(exc, context):
     if response is not None and "detail" in response.data:
         error = response.data["detail"]
         return HttpResponse(json.dumps({"data":[], "status": 0, "message": str(error)}))
-        
+
     # return response
     return HttpResponse(json.dumps({"data":[], "status": 0, "message": str(exc)}))
 
@@ -91,7 +91,7 @@ def has_permission(user, act_code):
             Util.set_cache("public","perm" + str(group_id), group_perm, 604800)
         else:
             group_perm = Util.get_cache("public","perm" + str(group_id))
-        
+
         for act in group_perm:
             if act["permissions__act_code"] == act_code:
                 has_permission = act["has_perm"]
@@ -115,10 +115,10 @@ class HttpsAppResponse:
     def send(data,status,message):
         return HttpResponse(json.dumps({"data":data, "status": status, "message": message}))
 
-    def exception(error):
-        logging.exception("Something went wrong.")
-        create_from_exception(error)
-        return HttpResponse(json.dumps({"data":[], "status": 0, "message": str(error)}))
+    def exception(e):
+        logging.exception(str(e))
+        create_from_exception(e)
+        return HttpResponse(json.dumps({"data":[], "status": 0, "message": str(e)}))
 
 
 class Util(object):
@@ -146,7 +146,7 @@ class Util(object):
         schemas_key = schemas + key
         if schemas_key in cache:
             cache.delete(schemas_key)
-            
+
     @staticmethod
     def get_local_time(utctime, showtime=False, time_format=None):
         if utctime == "" or utctime is None or utctime == 0 or utctime == "-":
@@ -162,7 +162,7 @@ class Util(object):
             return new_time.strftime(time_format)
         else:
             return new_time.strftime("%d/%m/%Y")
-        
+
     @staticmethod
     def convert_time_to_utc(timeobj, time_format=None):
         local_timezone = Util.get_timezone_info()
@@ -187,7 +187,7 @@ class Util(object):
         local_datetime = local_time.localize(naive_datetime, is_dst=None)
         utc_datetime = local_datetime.astimezone(pytz.utc)
         return utc_datetime
-    
+
     @staticmethod
     def get_human_readable_time(minutes):
         time = ""

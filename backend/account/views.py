@@ -124,12 +124,6 @@ class AppLogout(APIView):
 class AppRegistration(APIView):
     authentication_classes = []
     permission_classes = []
-    renderer_classes = [TemplateHTMLRenderer]
-    template_name = "app/registration.html"
-    success_url = "/account/app_login/"
-
-    def get(self, request, *args, **kwargs):
-        return Response(status=200, template_name=self.template_name)
 
     def post(self ,request, *args, **kwargs):
         try:
@@ -143,20 +137,20 @@ class AppRegistration(APIView):
             else:
                 error_messages = ", ".join(value[0] for key, value in serializer.errors.items())
                 raise Exception(error_messages)
-            return redirect(self.success_url)
+            return HttpsAppResponse.send([], 1, "User registered successfully.")
         except Exception as e:
-            logging.exception("Something went wrong.")
-            create_from_exception(e)
-            return render(request, self.template_name, context={"msg":str(e)})
+            return HttpsAppResponse.exception(str(e))
 
 class AppLogout(APIView):
     authentication_classes =[]
     permission_classes = []
-    success_url = "/account/app_login/"
 
     def get(self, request, *args, **kwargs):
-        logout(request)
-        return redirect(self.success_url)
+        try:
+            logout(request)
+            return HttpsAppResponse.send([], 1, "User logout successfully.")
+        except Exception as e:
+            return HttpsAppResponse.exception(str(e))
 
 
 class MyTokenObtainPairView(TokenObtainPairView):
@@ -166,6 +160,7 @@ class MyTokenObtainPairView(TokenObtainPairView):
 class AdminLogin(APIView):
     authentication_classes =[]
     permission_classes = []
+    
     def post(self,request):
         try:
             email = request.data["email"]

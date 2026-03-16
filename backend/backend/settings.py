@@ -49,6 +49,7 @@ AUTHENTICATION_BACKENDS = ['account.backends.MobileNumberBackend','account.backe
 
 
 INSTALLED_APPS = [
+    'daphne',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -59,15 +60,11 @@ INSTALLED_APPS = [
     'rest_framework_simplejwt.token_blacklist',
     'rest_framework',
     'drf_yasg',
+    'core',
     'corsheaders',
-    'crispy_forms',
-    'crispy_bootstrap5',
     'account',
-    'ai',
-    'app',
     'manager',
     'qradmin',
-    'qr_code',
     'postoffice',
     'django_celery_results',
     'django_celery_beat',
@@ -85,6 +82,8 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 # 'account.middleware.JWTAuthenticationMiddleware', #this is custom middleware for jwt authentication
+
+ASGI_APPLICATION = 'backend.asgi.application'
 
 ROOT_URLCONF = 'backend.urls'
 

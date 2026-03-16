@@ -41,9 +41,18 @@ class MainMenu(models.Model):
     def __str__(self):
         return self.name
 
+class Country(models.Model):
+    name = models.CharField(max_length=40, null=True, blank=True)
+    code = models.CharField(max_length=5, null=True, blank=True)
+    is_deleted = models.BooleanField(default=False)
+
+    def __str__(self):
+        return self.name
+
 class State(models.Model):
     name = models.CharField(max_length=40, null=True, blank=True)
     code = models.CharField(max_length=5, null=True, blank=True)
+    country = models.ForeignKey(Country, on_delete=models.PROTECT, null=True, blank=True)
     is_deleted = models.BooleanField(default=False)
 
     def __str__(self):
@@ -67,6 +76,7 @@ class BondUser(AbstractBaseUser, PermissionsMixin):
     pin_code = models.CharField(max_length=10, null=True, blank=True)
     city = models.ForeignKey(City, on_delete=models.CASCADE, null=True, blank=True)
     state = models.ForeignKey(State, on_delete=models.CASCADE, null=True, blank=True)
+    country = models.ForeignKey(Country, on_delete=models.CASCADE, null=True, blank=True)
     created_on = models.DateTimeField(auto_now_add=True)
     profile = models.ImageField(upload_to=upload_location, null=True, blank=True)
     password = models.CharField(max_length=200, null=True, blank=True)

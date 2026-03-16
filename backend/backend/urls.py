@@ -48,11 +48,9 @@ urlpatterns = [
     re_path(r'^swagger(?P<format>\.json|\.yaml)$',schema_view.without_ui(cache_timeout=0), name='schema-json'),
     path('swagger/', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),
     path('redoc/', schema_view.with_ui('redoc', cache_timeout=0), name='schema-redoc'),
-    path('',include("app.urls", namespace="welcome_app")),
     path('account/',include("account.urls", namespace="account")),
     path('manager/',include("manager.urls", namespace="manager")),
     path('qr_admin/',include("qradmin.urls", namespace="qr_admin")),
     path('post_office/',include("postoffice.urls", namespace="post_office")),
-    path('ai/',include("ai.urls", namespace="ai")),
 ]+ static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
