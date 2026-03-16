@@ -4,7 +4,7 @@ from django.db.models.signals import post_save
 from django.dispatch import receiver
 from datetime import timedelta
 from django.utils import timezone
-
+from .models import Country, State, City
 
 
 def upload_location(instance, filename):
@@ -29,43 +29,6 @@ class CustomUserManager(BaseUserManager):
         user.save(using=self._db)
         return user
 
-class MainMenu(models.Model):
-    name = models.CharField(max_length=100)
-    code = models.CharField(max_length=100)
-    icon = models.CharField(max_length=100, null=True,blank=True)
-    sequence = models.CharField(max_length=100)
-    url = models.CharField(max_length=100, null=True, blank=True)
-    is_parent = models.BooleanField(default=False)
-    parent = models.ForeignKey('self', on_delete=models.SET_NULL, blank=True, null=True)
-
-    def __str__(self):
-        return self.name
-
-class Country(models.Model):
-    name = models.CharField(max_length=40, null=True, blank=True)
-    code = models.CharField(max_length=5, null=True, blank=True)
-    is_deleted = models.BooleanField(default=False)
-
-    def __str__(self):
-        return self.name
-
-class State(models.Model):
-    name = models.CharField(max_length=40, null=True, blank=True)
-    code = models.CharField(max_length=5, null=True, blank=True)
-    country = models.ForeignKey(Country, on_delete=models.PROTECT, null=True, blank=True)
-    is_deleted = models.BooleanField(default=False)
-
-    def __str__(self):
-        return self.name
-
-class City(models.Model):
-    name = models.CharField(max_length=30, null=True, blank=True)
-    code = models.CharField(max_length=5, null=True, blank=True)
-    state = models.ForeignKey(State, on_delete=models.PROTECT, null=True, blank=True)
-    is_deleted = models.BooleanField(default=False)
-
-    def __str__(self):
-        return self.name
 
 class BondUser(AbstractBaseUser, PermissionsMixin):
     first_name = models.CharField(max_length=50)
