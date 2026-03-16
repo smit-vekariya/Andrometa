@@ -1,0 +1,60 @@
+{% extends "app/index.html" %}
+
+{% block title %} PanelPrime: About us {% endblock %}
+
+{% block custom_styles %}
+  <style>
+    .animation-text {
+      width: 50%;
+      color: white;
+      opacity: 0;
+      transform: translateY(50px);
+      animation: fadeInUp 2s ease-in-out forwards;
+    }
+
+    @keyframes fadeInUp {
+      0% {
+        opacity: 0;
+        transform: translateY(30px);
+      }
+      100% {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+
+  </style>
+{% endblock %}
+
+{% block content %}
+
+<div class="animation-text">
+  <section class="about-section">
+    <div class="container">
+      <h2>About PanelPrime</h2>
+      <p class="mission">At PanelPrime, we're dedicated to empowering businesses with cutting-edge technology solutions tailored to their unique needs. Whether you're looking to streamline your operations with a custom ERP system or leverage the power of APIs for seamless integration, we've got you covered.</p>
+      
+      <h3>Our Mission</h3>
+      <p>Our mission is to revolutionize the way businesses operate by providing intuitive and robust software solutions. We strive to empower organizations of all sizes to harness the power of technology to drive efficiency, productivity, and growth.</p>
+      
+      <h3>What We Offer</h3>
+      <ul>
+        <li>API Creation: We specialize in creating robust and scalable APIs that enable seamless communication between different software systems.</li>
+        <li>ERP Systems with React and Django: Our expertise lies in developing comprehensive ERP systems using the latest technologies such as React and Django.</li>
+      </ul>
+      
+      <h3>Why Choose PanelPrime?</h3>
+      <ul>
+        <li>Expertise: Our team comprises seasoned professionals with extensive experience in software development.</li>
+        <li>Customization: We offer fully customizable solutions tailored to your specific business requirements.</li>
+        <li>Customer Satisfaction: We prioritize customer satisfaction above all else.</li>
+      </ul>
+      
+      <p class="contact">Ready to take your business to the next level? <a href="{% url 'app:contact-us-page' %}">Contact us</a> today to learn more about how PanelPrime can help you unlock your full potential through technology.</p>
+    </div>
+  </section>
+</div>
+
+{% endblock %}
+

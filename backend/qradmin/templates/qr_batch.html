@@ -1,0 +1,15 @@
+{% load qr_code %}
+<html>
+  <body>
+    <div id="qr_code">
+      {% for i in data %}
+        {% qr_from_text i size="T" image_format="png" border=4  %}
+        {% if forloop.counter|divisibleby:3 %}
+          <br>
+        {% endif %}
+      {% endfor %}
+    </div>
+  </body>
+</html>
+
+</html>

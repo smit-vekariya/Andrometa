@@ -1,0 +1,129 @@
+{% extends "app/index.html" %}
+
+{% block title %} Welcome to PanelPrime {% endblock %}
+
+{% block custom_styles %}
+  <style>
+body{
+  background: black;
+  font-family: 'Poppins', sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.btn-shine{
+  position: absolute;
+  top: 45%;
+  left: 50%;
+  transform: translate(-50%,-50%);
+  padding: 12px 48px;
+  color: #ffffff;
+  background: linear-gradient(to right, #4d4d4d 0, white 10%, #4d4d4d 20%);
+  background-position: 0;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: shine 3s infinite linear;
+  animation-fill-mode: forwards;
+  -webkit-text-size-adjust: none;
+  font-weight: 600;
+  font-size: 30px;
+  text-decoration: none;
+  white-space: nowrap;
+
+}
+@keyframes shine{
+  0%{
+
+    background-position: 0
+  }
+  50%{
+
+    background-position: 200px
+  }
+  100%{
+
+    background-position: 400px
+  }
+}
+
+
+.escap {
+  display:inline-block;
+  overflow:hidden;
+  white-space:nowrap;
+}
+
+.escap:first-of-type {    /* For increasing performance
+                       ID/Class should've been used.
+                       For a small demo
+                       it's okaish for now */
+  animation: showup 7s infinite;
+}
+
+.escap:last-of-type {
+  width:0px;
+  animation: reveal 7s infinite;
+}
+
+.escap:last-of-type span {
+  margin-left:-355px;
+  animation: slidein 7s infinite;
+}
+
+@keyframes showup {
+    0% {opacity:0;}
+    20% {opacity:1;}
+    80% {opacity:1;}
+    100% {opacity:0;}
+}
+
+@keyframes slidein {
+    0% { margin-left:-800px; }
+    20% { margin-left:-800px; }
+    35% { margin-left:0px; }
+    100% { margin-left:0px; }
+}
+
+@keyframes reveal {
+    0% {opacity:0;width:0px;}
+    20% {opacity:1;width:0px;}
+    30% {width:355px;}
+    80% {opacity:1;}
+    100% {opacity:0;width:355px;}
+}
+
+
+p {
+  font-size:12px;
+  color:#999;
+  margin-top:200px;
+}
+.login_btn {
+    top: 400px;
+    border: 1px solid;
+    padding: 5px 14px;
+    margin: 41px 0px;
+    font-size: 16px;
+}
+.login_btn:hover{
+  border: 2px solid rgb(255, 255, 255) !important;
+  border-radius: 5px;
+}
+
+  </style>
+{% endblock %}
+
+{% block content %}
+
+<div class="main">
+  <div class="btn-shine" style="top:300px;font-size: 15px;">
+    <h1>WELCOME TO PANELPRIME</h1>
+  </div>
+  <div class="btn-shine" style="top:350px;font-size: 15px;">
+    <span>Integrating Innovation: Seamless ERPs, Powerful APIs, and Beyond</span>
+  </div>
+</div>
+
+
+{% endblock %}
+

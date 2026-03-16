@@ -1,0 +1,53 @@
+.login_card .ant-card-head {
+    border-bottom: 3px solid #0087ff !important;
+    border-radius: 0px 0px 5px 4px !important;
+}
+
+.custom_sidebar{
+    overflow: auto !important;
+    height: 100vh !important;
+    position: sticky !important;
+    left: 0 !important;
+    top: 0 !important;
+    bottom: 0 !important;
+    background-color: white !important;
+}
+.custom_header{
+    padding: 0 !important;
+    background: #ffffff !important;
+    position: sticky !important;
+    top: 0 !important;
+    z-index: 2 !important;
+    width: 100% !important;
+    align-items: center !important;
+}
+
+.ant-btn-primary {
+    margin: 0px 4px 0px 4px !important;
+}
+
+.ant-layout-sider-children::after {
+    content: "Powered by PanelPrime" !important;
+    display: block !important;
+    text-align: center !important;
+    margin: 20px 4px !important;
+    color: dimgray !important;
+}
+
+.ant-menu-item-selected{
+        border-radius: 4px !important
+}
+.wallet_card{
+    background: transparent;
+    border: 1px solid #ffffff;
+    color: #ffffff;
+}
+.wallet_card .ant-card-head-title{
+    color: #ffffff;
+}
+.ant-layout-sider-trigger{
+    background-color: #f5f5f5 !important;
+    color:black !important;
+
+
+}

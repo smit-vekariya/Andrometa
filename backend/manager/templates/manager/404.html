@@ -1,0 +1,45 @@
+
+<html lang="en">
+  <head>
+    <title>404: Page Not Found</title>
+    <style>
+        .btn-shine{
+            position: absolute;
+            top: 45%;
+            left: 50%;
+            transform: translate(-50%,-50%);
+            color: #ffffff;
+            background: linear-gradient(to right, #4d4d4d 0, white 10%, #4d4d4d 20%);
+            background-position: 0;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: shine 3s infinite linear;
+            animation-fill-mode: forwards;
+            -webkit-text-size-adjust: none;
+            font-size: 20px;
+            
+        }
+        @keyframes shine{
+            0%{
+
+                background-position: 0
+            }
+            50%{
+
+                background-position: 200px
+            }
+            100%{
+
+                background-position: 400px
+            }
+        }
+
+    </style>
+  </head>
+  <body style="background-color: black; color: white;">
+    <div class="btn-shine">
+        <p>404 | Page Not Found</p>
+    </div>
+  </body>
+</html>
+

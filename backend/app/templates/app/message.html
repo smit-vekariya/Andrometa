@@ -1,0 +1,38 @@
+{% extends "app/index.html" %}
+
+{% block title %} PanelPrime {% endblock %}
+
+{% block custom_styles %}
+  <style>
+    .animation-text {
+      font-size: 25px;
+      color: white;
+      opacity: 0;
+      transform: translateY(50px);
+      animation: fadeInUp 2s ease-in-out forwards;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+
+    @keyframes fadeInUp {
+      0% {
+        opacity: 0;
+        transform: translateY(50px);
+      }
+      100% {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+   
+  </style>
+{% endblock %}
+
+{% block content %}
+
+<div class="animation-text">{{messages}}</div>
+
+{% endblock %}
+

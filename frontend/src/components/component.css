@@ -1,0 +1,242 @@
+body:has(.main_div) {
+    /* background-image: url('images/login_bg.jpg'); */
+    background-image: linear-gradient(to bottom right, rgb(0, 0, 41), rgb(1, 110, 255));
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-position: center center;
+}
+.main_div{
+    display: grid;
+    place-items: center;
+    height: 100vh;
+    color: white;
+}
+.login_div {
+    margin: auto;
+    width: 500px;
+    text-align: center;
+    padding: 15px;
+    border-radius: 10px;
+    opacity: 10px;
+}
+.intro_div p{
+    /* margin-top: -200px ! important; */
+    text-align: justify;
+}
+.home_nav button{
+    margin: 5px 5px 5px 5px;
+}
+.home_nav{
+    position: fixed;
+    top: 0;
+    right:0;
+}
+.input_field{
+    background-color: transparent;
+}
+
+.login_side_div{
+    flex: 1;
+    background-color: rgb(0, 0, 0);
+    color: #333;
+    padding: 20px;
+}
+.centered-div{
+    display: flex;
+    height: 100vh;
+}
+.welcome-text{
+    color:white;
+    text-align: center;
+}
+
+.content_class{
+    margin: 5px 5px 5px 5px;
+    background-color:#f0f2f5;
+    border-radius: 5px;
+}
+.ant-layout-header{
+    height: 50px !important;
+    line-height: 50px !important;
+}
+.valid_error{
+    color: rgb(223, 111, 111);
+}
+
+.report_tab {
+    display: flex;
+    padding: 10px 5px;
+    /* border: 2px solid #FF9966; */
+    text-align: center;
+    margin: 5px;
+    border-radius: 5px;
+    background-color: #ffffff;
+    justify-content: space-between;
+}
+
+.title_tab{
+    display: flex;
+    padding: 5px;
+    border-bottom: 2px solid #0087ff;
+    text-align: center;
+    margin: 5px;
+    border-radius: 5px;
+    background-color: #ffffff;
+}
+.title_tab_div{
+    width: 100%;
+    text-align: right;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+}
+.title_tab_title{
+    padding: 3px 0px 0px 0px;
+    font-size: large;
+    font-weight: 700;
+    white-space: nowrap;
+}
+.batch_details{
+        padding: 10px;
+        border: 1px solid #cacaca;
+        background-color: #faebd7;
+        border-radius: 5px;
+        font-size: small;
+}
+.main_tab{
+    margin: 8px 4px 0px 4px;
+}
+
+.main_tab .ant-card-body{
+    display: flex;
+}
+
+.perm_card .ant-card-body{
+    display: grid !important;
+}
+
+.wallet_div {
+    padding: 15px;
+    border-radius: 7px;
+    color: white;
+    background-image: linear-gradient(to bottom right, rgb(0, 0, 41), rgb(1, 110, 255));
+}
+
+.wallet_div>div:first-child {
+    display: flex;
+    justify-content: space-between;
+}
+
+.title_tab_div * {
+    margin-right: 2px;
+}
+
+.manage_checkbox * {
+    margin-right: 10px;
+}
+
+.mail_input{
+    padding: 5px;
+}
+.mail_input .ant-input-group-addon{
+    width: 80px;
+}
+.mail_body{
+    margin: 10px 0px;
+}
+.list_div{
+    width: 40%;
+    height: 83vh;
+    overflow: scroll;
+}
+.result_div{
+    width: 60%;
+    background-color: #ffffff;
+    height: 83vh;
+    overflow: scroll;
+    padding: 0 10px;
+}
+.main_tab_result{
+    display: flex;
+    justify-content: space-between;
+}
+.title_div{
+    border-bottom: 1px dashed #c1c1c1;
+}
+.no_data{
+    color: #cacaca;
+    width: 60%;
+    display: flex;
+    align-content: space-around;
+    flex-wrap: wrap;
+    justify-content: center;
+    font-size: 39px;
+
+}
+
+/* ai button css */
+.ai_button {
+    position: relative;
+    overflow: hidden;
+    border-radius: 6px;
+    background: linear-gradient(135deg, #7F00FF, #00C9FF, #00FF87);
+    /* 3-color base */
+    background-size: 300% 300%;
+    animation: baseGradientShift 6s ease infinite;
+    color: white;
+    z-index: 1;
+    border: none;
+    transition: background 0.4s ease;
+}
+
+.ai_button>span {
+    position: relative;
+    z-index: 2;
+}
+
+.ai_button::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    border-radius: inherit;
+    background: linear-gradient(135deg, #6a11cb, #2575fc);
+    /* 2-color hover */
+    background-size: 200% 200%;
+    animation: hoverGradientShift 4s ease infinite;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.ai_button:hover::before {
+    opacity: 1;
+}
+
+@keyframes baseGradientShift {
+    0% {
+        background-position: 0% 50%;
+    }
+
+    50% {
+        background-position: 100% 50%;
+    }
+
+    100% {
+        background-position: 0% 50%;
+    }
+}
+
+@keyframes hoverGradientShift {
+    0% {
+        background-position: 0% 50%;
+    }
+
+    50% {
+        background-position: 100% 50%;
+    }
+
+    100% {
+        background-position: 0% 50%;
+    }
+}

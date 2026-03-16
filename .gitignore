@@ -1,0 +1,11 @@
+*.agdai
+MAlonzo/**
+*.pyc
+.venv\
+.venv/
+.venv
+venv
+.env
+# *.gz
+# *.sqlite3
+/frontend/build/

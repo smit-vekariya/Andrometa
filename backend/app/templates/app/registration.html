@@ -1,0 +1,40 @@
+{% extends "app/index.html" %}
+
+{% block title %} PanelPrime: Registration {% endblock %}
+
+{% block custom_styles %}
+{% endblock %}
+
+{% block content %}
+
+  <div class="container" style="width: 35%;">
+    <form method="POST">
+      {% csrf_token %}
+      <div class="form-group">
+        <label>Full name</label>
+        <input name="full_name" type="text" class="form-control" required/>
+      </div><br>
+      <div class="form-group">
+        <label>Mobile</label>
+        <input name="mobile" type="text" class="form-control" required/>
+        <small id="emailHelp" class="form-text text-muted">We'll never share your mobile number with anyone else.</small>
+      </div><br>
+      <div class="form-group">
+        <label>Email address</label>
+        <input name="email" type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" required/>
+        <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
+      </div><br>
+      <div class="form-group">
+        <label>Password</label>
+        <input name="password" type="password" class="form-control" required/>
+      </div><br>
+      <div class="form-group">
+        <label>Confirm Password</label>
+        <input name="confirm_password" type="password" class="form-control" required/>
+      </div><br>
+      <button class="btn btn-primary" type="submit">Register</button>
+    </form>
+    <div style="text-align: center;">{{msg}}</div>
+  </div>
+{% endblock %}
+

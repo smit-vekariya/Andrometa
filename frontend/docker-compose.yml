@@ -1,0 +1,15 @@
+version: '3.8'
+
+services:
+  react:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: frontend
+    ports:
+      - "3000:3000"
+    volumes:
+      - .:/app
+      - /app/node_modules  # Prevents overwriting node_modules in container
+    stdin_open: true
+    tty: true

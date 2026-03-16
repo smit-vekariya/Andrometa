@@ -1,0 +1,53 @@
+{
+  "app_label": "account",
+  "model": "mainmenu",
+  "unique_fields": [],
+  "fk": [],
+  "data": [
+    {
+      "name": "DashBoard",
+      "code": "company_dashboard",
+      "icon": "fa fa-dashboard",
+      "sequence": "1.0",
+      "url": "/company_dashboard",
+      "is_parent": false,
+      "parent": null
+    },
+    {
+      "name": "Users",
+      "code": "user",
+      "icon": "fa fa-user-circle",
+      "sequence": "2.0",
+      "url": "/user",
+      "is_parent": false,
+      "parent": null
+    },
+     {
+      "name": "Permissions",
+      "code": "permissions",
+      "icon": "fa fa-lock",
+      "sequence": "3.0",
+      "url": "/permissions",
+      "is_parent": false,
+      "parent": null
+    },
+      {
+      "name": "System Parameter",
+      "code": "system_parameter",
+      "icon": "fa fa-code",
+      "sequence": "4.0",
+      "url": "/system_parameter",
+      "is_parent": false,
+      "parent": null
+    },
+      {
+      "name": "Task scheduler",
+      "code": "task_scheduler",
+      "icon": "fa fa-calendar",
+      "sequence": "5.0",
+      "url": "/task_scheduler",
+      "is_parent": false,
+      "parent": null
+    }
+  ]
+}

@@ -1,0 +1,49 @@
+body {
+    background-color: #000000 !important;
+    color: #ffffff !important;
+    font-family: system-ui !important;
+    /* font-feature-settings: "smcp"; */
+    font-size: 15px !important;
+}
+
+/* navbar css */
+.index_header{
+    overflow: hidden;
+    background-color: #000000;
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 1;
+}
+.index_header ul {
+    width: 100%;
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    display: inline-flex;
+    justify-content: center;
+} 
+.index_header  li {
+    float: left;
+}
+.index_header  li a {
+    display: block;
+    color: white;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+}
+
+/* index body css */
+.index_body{
+    background-color: #000000;
+    padding: 10px;
+    margin-top: 40px;
+    display: flex;
+    justify-content: center;
+}
+
+.form-control{
+    background-color: #000000 !important;
+    color:white !important;
+}
