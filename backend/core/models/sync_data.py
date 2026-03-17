@@ -2,9 +2,39 @@ from django.db import models
 from django.contrib.auth.models import AbstractUser
 from django.contrib.contenttypes.fields import GenericForeignKey
 from django.contrib.contenttypes.models import ContentType
+import uuid
+from account.models import BondUser
+
+class Folder(models.Model):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    user = models.ForeignKey(BondUser, on_delete=models.CASCADE, related_name='folders')
+    name = models.CharField(max_length=255)
+    parent = models.ForeignKey(
+                     'self', null=True, blank=True,
+                     on_delete=models.CASCADE, related_name='subfolders'
+                 )
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        unique_together = ('user', 'parent', 'name')
+
+    def get_full_path(self):
+        # Returns '/Projects/Design/'
+        parts = []
+        node = self
+        while node:
+            parts.append(node.name)
+            node = node.parent
+        return '/' + '/'.join(reversed(parts)) + '/'
+
+    def __str__(self):
+        return self.get_full_path()
 
 
-class SyncData(models.Model):
+class File(models.Model):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    user = models.ForeignKey(BondUser, on_delete=models.CASCADE, related_name='files')
+
     """Tracks synchronization status of gallery media to cloud storage."""
     STATUS_CHOICES = [
         ('PENDING', 'Pending'),
@@ -17,12 +47,13 @@ class SyncData(models.Model):
     object_id = models.PositiveIntegerField()
     storage_account = GenericForeignKey('content_type', 'object_id')
 
+    folder = models.ForeignKey(Folder, null=True, blank=True, on_delete=models.SET_NULL, related_name='files')
+
     # File Metadata
     local_media_id = models.CharField(max_length=255, help_text="ID from phone gallery")
     device_id = models.CharField(max_length=255, help_text="Originating device ID")
     file_name = models.CharField(max_length=255)
     file_type = models.CharField(max_length=50, help_text="IMAGE, VIDEO, etc.")
-    checksum = models.CharField(max_length=255, db_index=True, help_text="MD5/SHA hash of file content")
 
     # Sync Status
     status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='PENDING')
@@ -37,7 +68,6 @@ class SyncData(models.Model):
         indexes = [
             models.Index(fields=['content_type', 'object_id']),
             models.Index(fields=['local_media_id', 'device_id']),
-            models.Index(fields=['checksum']),
         ]
         unique_together = [['content_type', 'object_id', 'local_media_id', 'device_id']]
 
