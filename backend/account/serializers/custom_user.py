@@ -8,9 +8,6 @@ class BondUserSerializers(serializers.ModelSerializer):
         model = BondUser
         fields = '__all__'
 
-        def create(self, validate):
-            BondUser.objects.create(*validate)
-
 
 class BondUserListSerializers(serializers.ModelSerializer):
     group__name = serializers.CharField(source='groups.name', read_only=True)

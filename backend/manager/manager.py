@@ -112,13 +112,32 @@ def system_parameter(code):
 
 
 class HttpsAppResponse:
-    def send(data,status,message):
-        return HttpResponse(json.dumps({"data":data, "status": status, "message": message}))
 
-    def exception(e):
+    @staticmethod
+    def send(data, status=1, message="Success", status_code=200):
+        return HttpResponse(
+            json.dumps({
+                "data": data,
+                "status": status,
+                "message": message
+            }),
+            content_type="application/json",
+            status=status_code
+        )
+
+    @staticmethod
+    def exception(e, status_code=500):
         logging.exception(str(e))
         create_from_exception(e)
-        return HttpResponse(json.dumps({"data":[], "status": 0, "message": str(e)}))
+
+        return HttpResponse(
+            json.dumps({
+                "data": [],
+                "status": 0,
+                "message": str(e)
+            }),
+            status=status_code
+        )
 
 
 class Util(object):

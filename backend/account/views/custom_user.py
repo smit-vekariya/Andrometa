@@ -6,7 +6,7 @@ from account.serializers import BondUserSerializers, BondUserListSerializers
 from account.models import BondUser
 from django.contrib.auth import authenticate
 from django.core.cache import cache
-from account.backends import AdminLoginBackend
+from account.backends import AdminLoginBackend, AppLoginBackend
 from manager import manager
 from manager.manager import HttpsAppResponse
 from django.shortcuts import render
@@ -84,31 +84,24 @@ class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
             manager.create_from_exception(e)
 
 class AppLogin(APIView):
-    authentication_classes = []
+    authentication_classes =[]
     permission_classes = []
-    renderer_classes = [TemplateHTMLRenderer]
-    template_name = "app/login.html"
-    success_url = "app:ask-anything-page"
-    redirect_field_name = 'next'
 
-    def get(self, request, *args, **kwargs):
-        return Response(status=200, template_name=self.template_name)
-
-    def post(self, request, *args, **kwargs):
+    def post(self,request):
         try:
-            data = request.data
-            user = authenticate(request, username=data["mobile"], password=data["password"])
-            if user is not None:
-                login(request, user , backend='django.contrib.auth.backends.ModelBackend')
-            redirect_to = request.GET.get(self.redirect_field_name, None)
-            if redirect_to:
-                return redirect(redirect_to)
+            email = request.data["email"]
+            password = request.data["password"]
+            if email and password:
+                user = AppLoginBackend.authenticate(request, email=email, password=password)
+                if user:
+                    tokens = MyTokenObtainPairSerializer.get_token(user)
+                    return HttpsAppResponse.send(tokens, 1, "Login successfully")
+                else:
+                    return HttpsAppResponse.send([], 0, "User is not found with this credential.")
             else:
-                return redirect(reverse(self.success_url))
+                return HttpsAppResponse.send([], 0, "Email and password is require.")
         except Exception as e:
-            logging.exception("Something went wrong.")
-            create_from_exception(e)
-            return render(request, self.template_name, context={"msg":str(e)})
+            return HttpsAppResponse.exception(str(e))
 
 
 class AppLogout(APIView):
@@ -130,12 +123,13 @@ class AppRegistration(APIView):
             data = request.data
             if data["password"] != data["confirm_password"]:
                 raise Exception("Confirm password does not match.")
-            password = make_password(data["confirm_password"])
-            serializer = BondUserSerializers(data={"full_name":data["full_name"],"mobile":data["mobile"],"email":data["email"],"password":password,"is_app_user":True})
+            data["is_app_user"] = True
+            data["password"] = make_password(data["confirm_password"])
+            serializer = BondUserSerializers(data=data)
             if serializer.is_valid():
                 serializer.save()
             else:
-                error_messages = ", ".join(value[0] for key, value in serializer.errors.items())
+                error_messages = ", ".join(f"{key}: {value[0]}" for key, value in serializer.errors.items())
                 raise Exception(error_messages)
             return HttpsAppResponse.send([], 1, "User registered successfully.")
         except Exception as e:

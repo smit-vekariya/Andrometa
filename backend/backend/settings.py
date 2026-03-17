@@ -276,3 +276,15 @@ LOGGING = {
         'level': 'INFO',  # or DEBUG
     },
 }
+
+
+
+GOOGLE_CLIENT_ID= env("GOOGLE_CLIENT_ID")
+GOOGLE_CLIENT_SECRET=env("GOOGLE_CLIENT_SECRET")
+GOOGLE_REDIRECT_URI = env("GOOGLE_REDIRECT_URI")
+GOOGLE_SCOPES = [
+    "openid",
+    "https://www.googleapis.com/auth/userinfo.email",
+    "https://www.googleapis.com/auth/userinfo.profile",
+    "https://www.googleapis.com/auth/drive.file",
+]

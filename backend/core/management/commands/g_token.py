@@ -4,7 +4,7 @@ from django.core.management.base import BaseCommand, CommandError
 from google_auth_oauthlib.flow import InstalledAppFlow
 
 
-SCOPES = ["https://www.googleapis.com/auth/drive.appdata"]
+SCOPES = ["https://www.googleapis.com/auth/drive.file"]
 
 
 class Command(BaseCommand):
@@ -12,7 +12,7 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
 
-        credentials_path = "C:/Users/smitv/Downloads/client_secret_463613713681-a17d76fgstuknb86rlkh5vpb134o4fdu.apps.googleusercontent.com.json"
+        credentials_path = "S:\client_secret_463613713681-a17d76fgstuknb86rlkh5vpb134o4fdu.apps.googleusercontent.com.json"
 
         if not os.path.exists(credentials_path):
             raise CommandError(

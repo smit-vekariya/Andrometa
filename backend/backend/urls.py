@@ -49,6 +49,7 @@ urlpatterns = [
     path('swagger/', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),
     path('redoc/', schema_view.with_ui('redoc', cache_timeout=0), name='schema-redoc'),
     path('account/',include("account.urls")),
+    path('core/',include("core.urls")),
     path('manager/',include("manager.urls")),
     path('qr_admin/',include("qradmin.urls")),
     path('post_office/',include("postoffice.urls")),
