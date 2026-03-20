@@ -1,15 +1,12 @@
 from django.http import HttpResponse
 import os
 from django.conf import settings
-from django.http import HttpResponseRedirect
 from rest_framework.decorators import api_view
-from rest_framework.response import Response
 from google_auth_oauthlib.flow import Flow
 from google.oauth2.credentials import Credentials
 from google.auth.transport.requests import Request
 from manager.manager import HttpsAppResponse
 from core.models import GoogleDriveAccount
-import requests
 from datetime import timedelta
 from django.utils import timezone
 from googleapiclient.discovery import build
