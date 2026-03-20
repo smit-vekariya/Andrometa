@@ -1,101 +1,120 @@
-import os, logging
+import os
+import logging
+import mimetypes
 from django.core.management.base import BaseCommand, CommandError
 from google.oauth2.credentials import Credentials
-from google_auth_oauthlib.flow import InstalledAppFlow
-from google.auth.transport.requests import Request
 from googleapiclient.discovery import build
 from googleapiclient.http import MediaFileUpload
-import mimetypes
 from django.conf import settings
 
 
-# If modifying these scopes, delete the file token.json.
-SCOPES = ["https://www.googleapis.com/auth/drive.appdata"]
+SCOPES = ["https://www.googleapis.com/auth/drive.file"]
 
 class Command(BaseCommand):
-    help = 'Upload a photo to Google Drive'
+    help = 'python manage.py upload_to_drive'
 
-    def detect_category(self, mimetype):
+    ROOT_FOLDER_NAME = "AndroMeta"
 
-        if mimetype is None:
-            return "documents"
+    CATEGORY_MAP = {
+        "image": "Photos",
+        "video": "Videos",
+    }
 
-        if mimetype.startswith("image"):
-            return "photos"
-
-        if mimetype.startswith("video"):
-            return "videos"
-
-        return "documents"
-
+    def detect_category(self, mimetype: str) -> str:
+        if not mimetype:
+            return "Documents"
+        for prefix, category in self.CATEGORY_MAP.items():
+            if mimetype.startswith(prefix):
+                return category
+        return "Documents"
 
     def get_credentials(self):
-        creds = None
-        
-        # 1. Use tokens directly if provided
         return Credentials(
-            token=settings.ACCESS_TOKEN,
-            refresh_token=settings.REFRESH_TOKEN,
+            token="",
+            refresh_token="",
             token_uri="https://oauth2.googleapis.com/token",
-            client_id=settings.CLIENT_ID,
-            client_secret=settings.CLIENT_SECRET,
+            client_id=settings.GOOGLE_CLIENT_ID,
+            client_secret=settings.GOOGLE_CLIENT_SECRET,
             scopes=SCOPES
         )
 
+    def get_or_create_folder(self, service, name: str, parent_id: str = None) -> str:
+        query = (
+            f"name='{name}' "
+            f"and mimeType='application/vnd.google-apps.folder' "
+            f"and trashed=false"
+        )
+        if parent_id:
+            query += f" and '{parent_id}' in parents"
+
+        results = service.files().list(
+            q=query,
+            spaces="drive",
+            fields="files(id, name)"
+        ).execute()
+
+        files = results.get("files", [])
+        if files:
+            self.stdout.write(self.style.WARNING(f"Folder '{name}' already exists."))
+            return files[0]["id"]
+
+        metadata = {
+            "name": name,
+            "mimeType": "application/vnd.google-apps.folder",
+        }
+        if parent_id:
+            metadata["parents"] = [parent_id]
+
+        folder = service.files().create(body=metadata, fields="id").execute()
+        self.stdout.write(self.style.SUCCESS(f"Created folder '{name}'."))
+        return folder["id"]
 
     def handle(self, *args, **options):
-
         try:
-
-            file_path = "C:/Users/smitv/Downloads/wkhtmltox-0.12.6-1.mxe-cross-win64.7z"
+            file_path = "S:\cheat-sheet-main.zip"
 
             if not os.path.exists(file_path):
-                raise CommandError("File not found")
+                raise CommandError("File not found.")
 
             creds = self.get_credentials()
-
             service = build("drive", "v3", credentials=creds)
 
             file_name = os.path.basename(file_path)
-
             mimetype, _ = mimetypes.guess_type(file_path)
-
             if not mimetype:
                 mimetype = "application/octet-stream"
 
             category = self.detect_category(mimetype)
 
-            media = MediaFileUpload(
-                file_path,
-                mimetype=mimetype,
-                resumable=True
-            )
+            # CloudMerge/ → CloudMerge/<category>/
+            root_id = self.get_or_create_folder(service, self.ROOT_FOLDER_NAME)
+            category_id = self.get_or_create_folder(service, category, parent_id=root_id)
+
+            media = MediaFileUpload(file_path, mimetype=mimetype, resumable=True)
 
             file_metadata = {
                 "name": file_name,
-                "parents": ["appDataFolder"],
-                "appProperties": {
-                    "category": category
-                }
+                "parents": [category_id],
             }
 
-            self.stdout.write(
-                self.style.NOTICE(
-                    f"Uploading '{file_name}' as category '{category}'..."
-                )
-            )
+            self.stdout.write(self.style.NOTICE(
+                f"Uploading '{file_name}' → {self.ROOT_FOLDER_NAME}/{category}/..."
+            ))
 
-            file = service.files().create(
+            uploaded = service.files().create(
                 body=file_metadata,
                 media_body=media,
-                fields="id,name"
+                fields="id, name, size, webViewLink"
             ).execute()
 
-            self.stdout.write(
-                self.style.SUCCESS(
-                    f"Upload successful! File ID: {file['id']}"
-                )
-            )
+            self.stdout.write(self.style.SUCCESS(
+                f"Upload successful!\n"
+                f"  File ID   : {uploaded['id']}\n"
+                f"  Name      : {uploaded['name']}\n"
+                f"  Size      : {uploaded.get('size', 'N/A')} bytes\n"
+                f"  View URL  : {uploaded.get('webViewLink', 'N/A')}\n"
+                f"  Path      : /{self.ROOT_FOLDER_NAME}/{category}/{file_name}"
+            ))
 
         except Exception as e:
             logging.exception("Error uploading file")

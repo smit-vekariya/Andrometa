@@ -11,7 +11,10 @@ from datetime import timedelta
 from django.utils import timezone
 from googleapiclient.discovery import build
 from django.core.cache import cache
+from django.db import transaction
 from account.models import BondUser
+from packages.google_drive.get_storage import GoogleDriveStorageError, GoogleDriveStorage
+
 
 
 
@@ -66,6 +69,8 @@ def google_callback(request):
         state = request.GET.get("state")
 
         cached = cache.get(f"google_cv_{state}")
+        if not cached:
+            return HttpsAppResponse.send({}, 0, "Invalid state", 400)
         cache.delete(f"google_cv_{state}")
 
         code_verifier = cached["code_verifier"]
@@ -106,39 +111,51 @@ def google_callback(request):
         email = user_info.get("email")
         name = user_info.get("name")
 
-        user = BondUser.objects.filter(id=user_id).first()
+        with transaction.atomic():
+            user = BondUser.objects.filter(id=user_id).first()
 
-        if not user or user.is_anonymous:
-            return HttpsAppResponse.send({}, 0, "User not authenticated", 401)
+            if not user or user.is_anonymous:
+                return HttpsAppResponse.send({}, 0, "User not authenticated", 401)
 
-        # Handle refresh_token (Google only sends first time)
-        existing_account = GoogleDriveAccount.objects.filter(
-            user=user,
-            email=email
-        ).first()
+            existing_account = GoogleDriveAccount.objects.filter(
+                user=user,
+                email=email
+            ).first()
 
-        if existing_account:
-            # If refresh_token not returned, keep old one
-            if not refresh_token:
-                refresh_token = existing_account.refresh_token
+            if existing_account:
+                if not refresh_token:
+                    refresh_token = existing_account.refresh_token
 
-        account, created = GoogleDriveAccount.objects.update_or_create(
-            user=user,
-            email=email,
-            defaults={
-                "access_token": access_token,
-                "refresh_token": refresh_token or (existing_account.refresh_token if existing_account else ""),
-                "client_id": settings.GOOGLE_CLIENT_ID,
-                "client_secret": settings.GOOGLE_CLIENT_SECRET,
-                "token_uri": "https://oauth2.googleapis.com/token",
-                "expiry": expiry if expiry else timezone.now() + timedelta(hours=1),
-                "is_active": True,
-                "updated_by": user,
-                **({"created_by": user} if not existing_account else {}),
-            }
-        )
+            account, created = GoogleDriveAccount.objects.update_or_create(
+                user=user,
+                email=email,
+                defaults={
+                    "access_token": access_token,
+                    "refresh_token": refresh_token or (existing_account.refresh_token if existing_account else ""),
+                    "client_id": settings.GOOGLE_CLIENT_ID,
+                    "client_secret": settings.GOOGLE_CLIENT_SECRET,
+                    "token_uri": "https://oauth2.googleapis.com/token",
+                    "expiry": expiry if expiry else timezone.now() + timedelta(hours=1),
+                    "is_active": True,
+                    "updated_by": user,
+                    **({"created_by": user} if not existing_account else {}),
+                }
+            )
 
-        return HttpsAppResponse.send({"message": "Google OAuth success", "email": email, "name": name, "access_token": access_token, "refresh_token": refresh_token,}, 1, "Google OAuth success")
+            # get account storage details:
+            try:
+                connector = GoogleDriveStorage(account.id)
+                storage_response = connector.get_storage_info()
+            except GoogleDriveStorageError as e:
+                raise Exception(e.as_dict())
+
+            account.total_storage = storage_response["total_storage"]
+            account.user_used_storage = storage_response["user_used_storage"]
+            account.app_used_storage = storage_response["app_used_storage"]
+            account.remaining_storage = storage_response["remaining_storage"]
+            account.save(update_fields=["total_storage", "user_used_storage", "app_used_storage", "remaining_storage"])
+
+            return HttpsAppResponse.send({"message": "Google OAuth success", "email": email, "name": name, "access_token": access_token, "refresh_token": refresh_token,}, 1, "Google OAuth success")
     except Exception as e:
         return HttpsAppResponse.exception(str(e))
 
