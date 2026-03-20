@@ -1,10 +1,9 @@
 from django.db import models
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, PermissionsMixin, Group
-from django.db.models.signals import post_save
-from django.dispatch import receiver
 from datetime import timedelta
 from django.utils import timezone
 from account.models import Country, State, City
+import uuid
 
 
 def upload_location(instance, filename):
@@ -31,8 +30,8 @@ class CustomUserManager(BaseUserManager):
 
 
 class BondUser(AbstractBaseUser, PermissionsMixin):
-    first_name = models.CharField(max_length=50)
-    last_name = models.CharField(max_length=50)
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    full_name = models.CharField(max_length=50)
     mobile = models.CharField(max_length=50,null=True, blank=True, unique=True)
     email = models.EmailField(unique=True)
     address = models.CharField(max_length=200, null=True, blank=True)

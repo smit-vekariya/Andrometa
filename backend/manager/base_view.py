@@ -4,7 +4,8 @@ from rest_framework.parsers import FormParser, MultiPartParser, JSONParser
 from rest_framework import filters
 from rest_framework.permissions import DjangoModelPermissions
 from manager.base_serializer import DefaultSerializer
-from manager.pagination import SetPagination
+from rest_framework.pagination import PageNumberPagination
+from rest_framework.response import Response
 
 
 class SetPagination(PageNumberPagination):

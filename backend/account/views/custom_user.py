@@ -72,7 +72,6 @@ class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
         try:
             token = super().get_token(user)
             token['email'] = user.email
-            token['full_name'] = f"{user.first_name} {user.last_name}"
             access_token =  str(token.access_token)
             refresh_token = str(token)
             UserToken.objects.update_or_create(user_id=user.id,defaults={'access_token': access_token})
@@ -227,7 +226,7 @@ class ForgetPassword(ViewSet):
 
             subject = "Reset Your Password - PanelPrime"
             message =  textwrap.dedent(f'''
-                Hi {email_user.first_name} {email_user.last_name},
+                Hi {email_user.full_name},
 
                 We received a request to reset your password for your PanelPrime account.
                 Please click the link below to reset your password:

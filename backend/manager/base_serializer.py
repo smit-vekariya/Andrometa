@@ -7,7 +7,7 @@ user = get_user_model()
 
 class RefUserSerializer(ModelSerializer):
     class Meta:
-        fields = ("id", "email", "first_name", "last_name")
+        fields = ("id", "email", "full_name")
         model = user
 
 

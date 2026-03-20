@@ -106,14 +106,6 @@ TEMPLATES = [
 WSGI_APPLICATION = 'backend.wsgi.application'
 
 
-# Database (https://docs.djangoproject.com/en/4.2/ref/settings/#databases)
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.sqlite3',
-#         'NAME': BASE_DIR / 'db.sqlite3',
-#     }
-# }
-
 DATABASES = {"default": {
     "ENGINE": os.environ.get("ENGINE", 'django.db.backends.sqlite3'),
     "NAME": os.environ.get("NAME", str(BASE_DIR / 'db.sqlite3')),
@@ -167,7 +159,6 @@ CSRF_TRUSTED_ORIGINS = env.list("CSRF_TRUSTED_ORIGINS")
 GEMINI_API_KEY = env("GEMINI_API_KEY")
 OPENAI_API_KEY = env("OPENAI_API_KEY")
 
-POINT_PER_AMOUNT = env("POINT_PER_AMOUNT")
 FAST2SMS = env("FAST2SMS")
 FAST2SMS_API_KEY = env("FAST2SMS_API_KEY")
 RAZORPAY_API_ID = env("RAZORPAY_API_ID")

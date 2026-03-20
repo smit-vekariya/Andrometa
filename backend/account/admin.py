@@ -10,7 +10,7 @@ class MainMenuAdmin(admin.ModelAdmin):
 
 @admin.register(BondUser)
 class BondUserAdmin(admin.ModelAdmin):
-    list_display = ("mobile", "email", "first_name", "last_name", "address", "city", "pin_code", "state", "created_on", "is_deleted")
+    list_display = ("mobile", "email", "full_name", "address", "city", "pin_code", "state", "created_on", "is_deleted")
 
 
 @admin.register(State)

@@ -18,7 +18,7 @@ class UserList(generics.ListAPIView):
     queryset = BondUser.objects.filter(is_deleted=False)
     filter_backends = [filters.OrderingFilter, filters.SearchFilter]
     serializer_class = BondUserListSerializers
-    search_fields =["first_name", "email"]
+    search_fields =["full_name", "email"]
     pagination_class = CustomPagination
 
 class DashBoardView(APIView):
