@@ -84,7 +84,7 @@ def send_mail_schedule(id):
 #Mobile number is fix (contact green api for more: https://greenapi.com/en/docs/api)
 def send_whatsapp_message(message):
     try:
-        url=settings.GREEN_API
+        url= "green api url"
         payload={
                     "chatId": "9537127284@c.us",
                     "message": message,
@@ -129,8 +129,8 @@ def send_otp_to_mobile(mobile_no):
     try:
         if mobile_no:
             otp = random.randint(100000, 999999)
-            url = settings.FAST2SMS
-            api_key =  settings.FAST2SMS_API_KEY
+            url = "https://www.fast2sms.com/dev/bulkV2"
+            api_key = "[ENCRYPTION_KEY]"
             querystring = {"authorization":api_key,"variables_values":str(otp),"route":"otp","numbers":mobile_no}
             headers = { 'cache-control': "no-cache" }
             response = requests.request("GET", url, headers=headers, params=querystring)

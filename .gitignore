@@ -9,3 +9,9 @@ venv
 # *.gz
 # *.sqlite3
 /frontend/build/
+*/migrations/*.py
+!*/migrations/__init__.py
+
+# Ignore all migration files
+backend/**/migrations/*.py
+!backend/**/migrations/__init__.py
