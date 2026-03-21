@@ -82,7 +82,7 @@ class AppVerifyForgotPasswordOTPSerializer(serializers.Serializer):
     otp   = serializers.CharField()
 
     def validate(self, attrs):
-        email = attrs.get("email")
+        email = attrs.get("email")  
         otp   = attrs.get("otp")
 
         otp_record = AuthOTP.objects.filter(
