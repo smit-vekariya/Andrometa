@@ -10,9 +10,9 @@ app_name = "account"
 urlpatterns = [
     path('token/', MyTokenObtainPairView.as_view(), name='token_obtain_pair'),
     path('token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
-    path('register/', RegisterUser.as_view(), name='register'),
-    path('forgot_password/send_mail/', ForgetPassword.as_view({"post":"send_mail"}), name="forgot_password_send_mail"),
-    path('forgot_password/change_password/', ForgetPassword.as_view({"post":"change_password"}), name="forgot_password_change_password"),
+    # path('register/', RegisterUser.as_view(), name='register'),
+    # path('forgot_password/send_mail/', ForgetPassword.as_view({"post":"send_mail"}), name="forgot_password_send_mail"),
+    # path('forgot_password/change_password/', ForgetPassword.as_view({"post":"change_password"}), name="forgot_password_change_password"),
 
     # app login
     path('app_registration/', AppRegistration.as_view(), name="app-registration"),
@@ -20,9 +20,12 @@ urlpatterns = [
     path('app_login/', AppLogin.as_view(), name="app-login"),
     path('app_logout/', AppLogout.as_view(), name="app-logout"),
 
+    path("app_forgot_password/", AppForgotPassword.as_view(), name="app-forgot-password"),
+    path("app_verify_forgot_otp/", AppVerifyForgotPasswordOTP.as_view(), name="app-verify-forgot-otp"),
+    path("app_reset_password/", AppResetPassword.as_view(), name="app-reset-password"),
 
     #adminpanel api
-    path('admin_login/', AdminLogin.as_view(), name='admin_login'),
-    path('user_profile/', UserProfile.as_view({'get': 'retrieve'}), name="user_profile"),
-    path('edit_profile/<int:pk>', UserProfile.as_view({'get': 'put'}), name="edit_profile")
+    # path('admin_login/', AdminLogin.as_view(), name='admin_login'),
+    # path('user_profile/', UserProfile.as_view({'get': 'retrieve'}), name="user_profile"),
+    # path('edit_profile/<int:pk>', UserProfile.as_view({'get': 'put'}), name="edit_profile")
 ]

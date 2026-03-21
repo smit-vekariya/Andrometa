@@ -1,28 +1,17 @@
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from rest_framework_simplejwt.views import TokenObtainPairView
 import logging
-from rest_framework.views import APIView, View
-from account.serializers import CustomUserSerializers, CustomUserListSerializers
+from rest_framework.views import APIView
+from account.serializers import CustomUserSerializers, CustomUserListSerializers, AppForgotPasswordSerializer, AppVerifyForgotPasswordOTPSerializer, AppResetPasswordSerializer
 from account.models import CustomUser
-from django.contrib.auth import authenticate
-from django.core.cache import cache
 from account.backends import AdminLoginBackend, AppLoginBackend
 from manager import manager
 from manager.manager import HttpsAppResponse
-from django.shortcuts import render
-from rest_framework_simplejwt.token_blacklist.models import OutstandingToken, BlacklistedToken
 from django.contrib.auth.models import update_last_login
-from account.models import MainMenu,UserToken
+from account.models import UserToken
 from rest_framework import viewsets
-from rest_framework.response import Response
-from rest_framework.renderers import TemplateHTMLRenderer
-from rest_framework.decorators import action
-from manager.models import GroupPermission
-from django.urls import reverse
 from django.contrib.auth.hashers import make_password
-from manager.manager import create_from_exception
-from django.shortcuts  import redirect
-from django.contrib.auth import login, authenticate, logout
+from django.contrib.auth import logout
 from postoffice.views import SendMail
 import textwrap
 from django.contrib.auth.tokens import default_token_generator
@@ -31,14 +20,14 @@ from django.utils.encoding import force_bytes
 from django.core.exceptions import ObjectDoesNotExist
 from django.conf import settings
 from rest_framework.viewsets import ViewSet
-from rest_framework.decorators import action
 from django.utils.http import urlsafe_base64_decode
 from django.contrib.auth import get_user_model
-from django.db.models import F
 from postoffice.views import send_otp_to_email
 from account.models import AuthOTP
 from django.utils import timezone
 import json
+from manager.manager import custom_response_errors
+
 
 
 
@@ -254,6 +243,80 @@ class RegisterUser(APIView):
             return HttpsAppResponse.send([], 1, "User deleted successfully")
         except Exception as e:
             return HttpsAppResponse.exception(str(e))
+
+
+class AppForgotPassword(APIView):
+    authentication_classes = []
+    permission_classes = []
+
+    def post(self, request):
+        try:
+            serializer = AppForgotPasswordSerializer(data=request.data)
+            if not serializer.is_valid():
+                return HttpsAppResponse.send([], 0, custom_response_errors(serializer.errors))
+
+            email = serializer.validated_data["email"]
+            otp = send_otp_to_email(email)
+            if len(str(otp)) > 6:
+                return HttpsAppResponse.send([], 0, otp)
+
+            AuthOTP.objects.update_or_create(
+                key=f"forgot_{email}",
+                defaults={
+                    "otp": otp,
+                    "created_on": timezone.now(),
+                    "value": email,
+                }
+            )
+            return HttpsAppResponse.send([], 1, "OTP sent to your email successfully.")
+        except Exception as e:
+            return HttpsAppResponse.exception(str(e))
+
+
+class AppVerifyForgotPasswordOTP(APIView):
+    authentication_classes = []
+    permission_classes = []
+
+    def post(self, request):
+        try:
+            serializer = AppVerifyForgotPasswordOTPSerializer(data=request.data)
+            if not serializer.is_valid():
+                return HttpsAppResponse.send([], 0, custom_response_errors(serializer.errors))
+
+            email = serializer.validated_data["email"]
+            otp_record = serializer.validated_data["otp_record"]
+
+            otp_record.value = f"verified_{email}"
+            otp_record.save()
+
+            return HttpsAppResponse.send({"email": email}, 1, "OTP verified successfully.")
+        except Exception as e:
+            return HttpsAppResponse.exception(str(e))
+
+
+class AppResetPassword(APIView):
+    authentication_classes = []
+    permission_classes = []
+
+    def post(self, request):
+        try:
+            serializer = AppResetPasswordSerializer(data=request.data)
+            if not serializer.is_valid():
+                return HttpsAppResponse.send([], 0, custom_response_errors(serializer.errors))
+
+            email = serializer.validated_data["email"]
+            password   = serializer.validated_data["password"]
+            otp_record = serializer.validated_data["otp_record"]
+
+            user = CustomUser.objects.get(email=email, is_active=True)
+            user.password = make_password(password)
+            user.save()
+
+            otp_record.delete()
+            return HttpsAppResponse.send([], 1, "Password reset successfully.")
+        except Exception as e:
+            return HttpsAppResponse.exception(str(e))
+
 
 class ForgetPassword(ViewSet):
     authentication_classes = []
