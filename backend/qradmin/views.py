@@ -1,6 +1,6 @@
 from django.shortcuts import render
-from account.serializers import BondUserListSerializers
-from account.models import BondUser
+from account.serializers import CustomUserListSerializers
+from account.models import CustomUser
 from rest_framework import generics, viewsets
 from rest_framework.views import APIView
 from rest_framework import filters
@@ -15,16 +15,16 @@ class CustomPagination(PageNumberPagination):
     max_page_size = 1000
 
 class UserList(generics.ListAPIView):
-    queryset = BondUser.objects.filter(is_deleted=False)
+    queryset = CustomUser.objects.filter(is_deleted=False)
     filter_backends = [filters.OrderingFilter, filters.SearchFilter]
-    serializer_class = BondUserListSerializers
+    serializer_class = CustomUserListSerializers
     search_fields =["full_name", "email"]
     pagination_class = CustomPagination
 
 class DashBoardView(APIView):
     def get(self, request, *args, **kwargs):
         try:
-            total_bond_user = BondUser.objects.filter(is_deleted=False).count()
+            total_bond_user = CustomUser.objects.filter(is_deleted=False).count()
             return HttpsAppResponse.send([{"total_bond_user":total_bond_user}], 1, "Data fetch successfully")
         except Exception as e:
             return HttpsAppResponse.exception(str(e))

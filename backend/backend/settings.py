@@ -37,7 +37,7 @@ DEBUG = env("DEBUG")
 
 ALLOWED_HOSTS = env.list("ALLOWED_HOSTS")
 
-AUTH_USER_MODEL = 'account.BondUser'
+AUTH_USER_MODEL = 'account.CustomUser'
 AUTHENTICATION_BACKENDS = ['account.backends.MobileNumberBackend','account.backends.AdminLoginBackend','django.contrib.auth.backends.ModelBackend']
 
 # CACHES = {

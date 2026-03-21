@@ -16,6 +16,7 @@ urlpatterns = [
 
     # app login
     path('app_registration/', AppRegistration.as_view(), name="app-registration"),
+    path('verify_app_registration/', VerifyAppRegistration.as_view(), name="verify-app-registration"),
     path('app_login/', AppLogin.as_view(), name="app-login"),
     path('app_logout/', AppLogout.as_view(), name="app-logout"),
 

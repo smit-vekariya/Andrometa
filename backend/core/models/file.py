@@ -2,7 +2,7 @@
 from django.db import models
 from django.contrib.contenttypes.fields import GenericForeignKey
 from django.contrib.contenttypes.models import ContentType
-from account.models import BondUser
+from account.models import CustomUser
 from manager.base_model import BaseModel
 from .folder import Folder
 

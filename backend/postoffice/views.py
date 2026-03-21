@@ -95,6 +95,35 @@ def send_whatsapp_message(message):
     except Exception  as e:
       return HttpsAppResponse.exception(str(e))
 
+def send_otp_to_email(email: str) -> int | str:
+    try:
+        if not email:
+            return "Email is required."
+
+        otp = random.randint(100000, 999999)
+
+        is_send, msg = SendMail.send_mail(
+            action_by=None,
+            is_now=True,
+            receiver=email,
+            subject="OTP Code",
+            message=f"Your OTP is {otp}. It will expire in 5 minutes. Do not share it with anyone.",
+        )
+
+        if is_send:
+            return otp
+        else:
+            create_from_text(
+                "Error in OTP sending", "Important", 10,
+                f"response => {msg}, info => email: '{email}' otp: '{otp}'"
+            )
+            return "We encountered an issue while sending the OTP. Please try again later."
+
+    except Exception as e:
+        logging.exception("Something went wrong.")
+        create_from_exception(e)
+        return 0
+
 
 def send_otp_to_mobile(mobile_no):
     try:

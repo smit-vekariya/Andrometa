@@ -2,7 +2,7 @@ from django.db import models
 import logging
 from django.utils.translation import gettext_lazy as _
 from django.contrib.contenttypes.models import ContentType
-from account.models import BondUser
+from account.models import CustomUser
 from django.db.models.signals import post_save,pre_delete
 from django.dispatch import receiver
 from django.contrib.auth.models import Group
@@ -48,7 +48,7 @@ class History(models.Model):
     action_type = models.CharField(max_length=100, choices=action_types, null=True, blank=True)
     ip_addr = models.CharField(default="", max_length=45)
     action_on = models.DateTimeField(auto_now=True)
-    action_by = models.ForeignKey(BondUser, on_delete=models.PROTECT)
+    action_by = models.ForeignKey(CustomUser, on_delete=models.PROTECT)
 
 
 #with group create all group permission is created with all permission

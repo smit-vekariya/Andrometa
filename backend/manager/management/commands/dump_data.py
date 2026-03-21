@@ -1,7 +1,7 @@
 from django.core.management import BaseCommand
 from django.db import transaction, connections
 from django.contrib.contenttypes.models import ContentType
-from account.models import BondUser
+from account.models import CustomUser
 from django.conf import  settings
 import traceback, json, requests
 
@@ -76,7 +76,7 @@ class Command(BaseCommand):
     def bulk_create_new(self, model, data_list, unique_fields, name, app_label, app_model):
         try:
             with transaction.atomic():
-                user_instance = BondUser.objects.filter(is_active=True, is_superuser=True).first()
+                user_instance = CustomUser.objects.filter(is_active=True, is_superuser=True).first()
                 if unique_fields:
                     # Extract unique field values from data_list
                     unique_values = {field: set(map(lambda d: d[field], data_list)) for field in unique_fields}

@@ -1,6 +1,6 @@
 
 from django.db import models
-from account.models import BondUser
+from account.models import CustomUser
 from manager.base_model import BaseModel
 
 class GoogleDriveAccount(BaseModel):

@@ -12,7 +12,7 @@ from django.utils import timezone
 from googleapiclient.discovery import build
 from django.core.cache import cache
 from django.db import transaction
-from account.models import BondUser
+from account.models import CustomUser
 from packages.google_drive.get_storage import GoogleDriveStorageError, GoogleDriveStorage
 
 
@@ -112,7 +112,7 @@ def google_callback(request):
         name = user_info.get("name")
 
         with transaction.atomic():
-            user = BondUser.objects.filter(id=user_id).first()
+            user = CustomUser.objects.filter(id=user_id).first()
 
             if not user or user.is_anonymous:
                 return HttpsAppResponse.send({}, 0, "User not authenticated", 401)

@@ -2,8 +2,8 @@ from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from rest_framework_simplejwt.views import TokenObtainPairView
 import logging
 from rest_framework.views import APIView, View
-from account.serializers import BondUserSerializers, BondUserListSerializers
-from account.models import BondUser
+from account.serializers import CustomUserSerializers, CustomUserListSerializers
+from account.models import CustomUser
 from django.contrib.auth import authenticate
 from django.core.cache import cache
 from account.backends import AdminLoginBackend

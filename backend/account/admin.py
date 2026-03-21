@@ -1,5 +1,5 @@
 from django.contrib import admin
-from account.models import MainMenu, BondUser, State, City, UserToken, AuthOTP
+from account.models import MainMenu, CustomUser, State, City, UserToken, AuthOTP
 
 # Register your models here.
 
@@ -8,8 +8,8 @@ class MainMenuAdmin(admin.ModelAdmin):
     list_display = ("name","code", "url", "sequence", "parent", "is_parent", "icon")
 
 
-@admin.register(BondUser)
-class BondUserAdmin(admin.ModelAdmin):
+@admin.register(CustomUser)
+class CustomUserAdmin(admin.ModelAdmin):
     list_display = ("mobile", "email", "full_name", "address", "city", "pin_code", "state", "created_on", "is_deleted")
 
 
@@ -29,6 +29,6 @@ class UserTokenAdmin(admin.ModelAdmin):
 
 @admin.register(AuthOTP)
 class AuthOTPAdmin(admin.ModelAdmin):
-    list_display =('key','value', 'otp', 'expire_on', 'created_on', 'is_used')
+    list_display =('key','value', 'otp', 'expire_on', 'created_on')
 
 

@@ -3,7 +3,7 @@ from datetime import datetime
 from django.dispatch import receiver
 from django.db.models.signals import post_save
 from django.utils import timezone
-from account.models import BondUser
+from account.models import CustomUser
 
 # Create your models here.
 
@@ -26,7 +26,7 @@ class EmailLog(models.Model):
     updated_at = models.DateTimeField(null=True, blank=True)
     error_message = models.TextField(blank=True, null=True)
     is_now = models.BooleanField(default=True)
-    action_by =models.ForeignKey(BondUser, on_delete=models.CASCADE, null=True, blank=True)
+    action_by =models.ForeignKey(CustomUser, on_delete=models.CASCADE, null=True, blank=True)
 
     def __str__(self):
         return self.subject

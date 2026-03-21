@@ -29,7 +29,7 @@ class CustomUserManager(BaseUserManager):
         return user
 
 
-class BondUser(AbstractBaseUser, PermissionsMixin):
+class CustomUser(AbstractBaseUser, PermissionsMixin):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     full_name = models.CharField(max_length=50)
     mobile = models.CharField(max_length=50,null=True, blank=True, unique=True)
@@ -65,7 +65,7 @@ class BondUser(AbstractBaseUser, PermissionsMixin):
         self.save()
 
 class UserToken(models.Model):
-    user = models.ForeignKey(BondUser, on_delete=models.CASCADE)
+    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
     access_token = models.CharField(max_length=400)
     is_allowed = models.BooleanField(default=True)
 
@@ -76,7 +76,6 @@ class AuthOTP(models.Model):
     otp = models.CharField(max_length=20)
     expire_on = models.DateTimeField(null=True, blank=True)
     created_on = models.DateTimeField(null=True, blank=True)
-    is_used = models.BooleanField(default=False)
 
     def save(self, *args, **kwargs):
         self.expire_on = self.created_on + timedelta(minutes=1)

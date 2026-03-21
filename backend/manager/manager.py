@@ -17,7 +17,7 @@ from django.db import connection
 from django.http import HttpResponse
 from django.utils.encoding import smart_str
 from manager.models import ErrorBase, GroupPermission, SystemParameter
-from account.models import BondUser
+from account.models import CustomUser
 from rest_framework.views import exception_handler
 from rest_framework.exceptions import ValidationError
 from rest_framework import status
