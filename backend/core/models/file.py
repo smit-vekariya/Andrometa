@@ -8,7 +8,6 @@ from .folder import Folder
 
 class File(BaseModel):
 
-    user = models.ForeignKey(BondUser, on_delete=models.CASCADE, related_name='files')
     folder = models.ForeignKey(Folder, null=True, blank=True, on_delete=models.SET_NULL, related_name='files')
 
     # Generic FK — points to GoogleDriveAccount, OneDriveAccount, DropboxAccount, etc.

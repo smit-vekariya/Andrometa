@@ -15,6 +15,7 @@ class DefaultSerializer(serializers.Serializer):
     pass
 
 class BaseModelSerializer(ModelSerializer):
+    user = RefUserSerializer(read_only=True, allow_null=True)
     created_by = RefUserSerializer(read_only=True, allow_null=True)
     updated_by = RefUserSerializer(read_only=True, allow_null=True)
     deleted_by = RefUserSerializer(read_only=True, allow_null=True)
@@ -25,6 +26,8 @@ class BaseModelSerializer(ModelSerializer):
     is_active = serializers.BooleanField(default=True, read_only=True, required=False)
 
     def validate(self, attrs):
+        if self.context.get("user", None):
+            attrs["user"] = self.context.get("user")
         if self.context.get("created_by", None):
             attrs["created_by"] = self.context.get("created_by")
         if self.context.get("updated_by", None):

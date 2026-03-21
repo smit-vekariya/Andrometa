@@ -7,6 +7,7 @@ class BaseModel(models.Model):
     id = models.UUIDField(
         default=uuid.uuid4, unique=True, editable=False, db_index=True, primary_key=True
     )
+    user = models.ForeignKey(BondUser, on_delete=models.CASCADE, related_name='%(app_label)s_%(class)s')
     created_by = models.ForeignKey(
         BondUser,
         on_delete=models.SET_NULL,

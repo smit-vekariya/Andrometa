@@ -20,6 +20,28 @@ from manager.models import ErrorBase, GroupPermission, SystemParameter
 from account.models import BondUser
 from rest_framework.views import exception_handler
 from rest_framework.exceptions import ValidationError
+from rest_framework import status
+
+
+def custom_response_errors(responses):
+    error_messages = []
+    for field, errors in responses.items():
+        if isinstance(errors, dict):
+            for sub_field, sub_errors in errors.items():
+                if isinstance(sub_errors, (list, tuple)):
+                    for msg in sub_errors:
+                        error_messages.append({f"{field}[{sub_field}]": str(msg)})
+                else:
+                    error_messages.append({f"{field}[{sub_field}]": str(sub_errors)})
+
+        elif isinstance(errors, list):
+            for error in errors:
+                error_messages.append({field: str(error)})
+        else:
+            error_messages.append({field: str(errors)})
+
+    return error_messages
+
 
 # you can customize exception handler response from this like serialize error respose and other error respose (https://www.django-rest-framework.org/api-guide/exceptions/)
 def custom_exception_handler(exc, context):
@@ -114,7 +136,7 @@ def system_parameter(code):
 class HttpsAppResponse:
 
     @staticmethod
-    def send(data, status=1, message="Success", status_code=200):
+    def send(data, status=1, message="Success", status_code=status.HTTP_200_OK):
         return HttpResponse(
             json.dumps({
                 "data": data,
@@ -126,7 +148,7 @@ class HttpsAppResponse:
         )
 
     @staticmethod
-    def exception(e, status_code=500):
+    def exception(e, status_code=status.HTTP_500_INTERNAL_SERVER_ERROR):
         logging.exception(str(e))
         create_from_exception(e)
 

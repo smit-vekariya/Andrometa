@@ -4,7 +4,6 @@ from account.models import BondUser
 from manager.base_model import BaseModel
 
 class GoogleDriveAccount(BaseModel):
-    user = models.ForeignKey(BondUser, on_delete=models.CASCADE, related_name='google_accounts')
     email = models.EmailField()
     access_token = models.TextField()
     refresh_token = models.TextField()
