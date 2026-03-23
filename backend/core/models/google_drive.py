@@ -15,10 +15,14 @@ class GoogleDriveAccount(BaseModel):
     app_used_storage = models.BigIntegerField(default=0, help_text="Used storage in bytes")
     user_used_storage = models.BigIntegerField(default=0, help_text="Used storage in bytes")
     remaining_storage = models.BigIntegerField(default=0, help_text="Remaining storage in bytes")
+    priority = models.PositiveIntegerField(default=0, help_text="Lower = higher priority")
+
 
     def __str__(self):
         return f"Google: {self.email}"
 
+    class Meta:
+        ordering = ['priority']
 
     @staticmethod
     def _format_bytes(b: int) -> str:

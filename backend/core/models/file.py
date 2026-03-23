@@ -12,7 +12,7 @@ class File(BaseModel):
 
     # Generic FK — points to GoogleDriveAccount, OneDriveAccount, DropboxAccount, etc.
     content_type = models.ForeignKey(ContentType, on_delete=models.CASCADE)
-    object_id = models.PositiveIntegerField()
+    object_id = models.UUIDField()
     storage_account = GenericForeignKey('content_type', 'object_id')
 
     # File metadata
@@ -25,6 +25,8 @@ class File(BaseModel):
     remote_file_id = models.CharField(max_length=255, help_text="Provider's file ID (Drive ID, OneDrive ID, etc.)")
     remote_file_path = models.TextField(help_text="Full path on provider, e.g. /CloudMerge/Photos/img.jpg")
     remote_view_url = models.URLField(null=True, blank=True, help_text="Direct view/preview URL from provider")
+    remote_download_url = models.URLField(max_length=500, null=True, blank=True, help_text="Direct download URL")
+    remote_thumbnail_url = models.URLField(max_length=500, null=True, blank=True, help_text="Thumbnail/preview for images & videos")
 
     # Origin tracking
     local_media_id = models.CharField(max_length=255, null=True, blank=True, help_text="ID from phone gallery")
@@ -44,7 +46,7 @@ class File(BaseModel):
         ]
 
     def __str__(self):
-        return f"{self.file_name} → {self.remote_file_path} ({self.status})"
+        return f"{self.file_name} → {self.remote_file_path} "
 
 
 

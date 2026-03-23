@@ -6,6 +6,7 @@ MAlonzo/**
 .venv
 venv
 .env
+uv.lock
 # *.gz
 # *.sqlite3
 /frontend/build/

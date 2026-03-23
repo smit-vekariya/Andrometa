@@ -13,7 +13,9 @@ from googleapiclient.discovery import build
 from django.core.cache import cache
 from django.db import transaction
 from account.models import CustomUser
+from manager.base_view import BaseModelViewSet
 from packages.google_drive.get_storage import GoogleDriveStorageError, GoogleDriveStorage
+from core.serializers import GoogleDriveAccountSerializer
 
 
 
@@ -178,3 +180,10 @@ def refresh_google_token(request):
         return HttpsAppResponse.send({"access_token": creds.token}, 1, "Google OAuth success")
     except Exception as e:
         return HttpsAppResponse.exception(str(e))
+
+
+class GoogleDriveAccountViewSet(BaseModelViewSet):
+    queryset = GoogleDriveAccount.objects.all()
+    serializer_class = GoogleDriveAccountSerializer
+    search_fields = ['email']
+    ordering_fields = ('email', 'created_at')

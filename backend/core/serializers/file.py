@@ -4,6 +4,12 @@ from manager.base_serializer import BaseModelSerializer
 from core.models import File
 
 
+class FileUploadSerializer(serializers.Serializer):
+    folder_id = serializers.UUIDField(required=False, allow_null=True)
+    files = serializers.ListField(child=serializers.FileField(), allow_empty=False)
+    device_id = serializers.CharField(required=False, allow_blank=True)
+
+
 class FileSerializer(BaseModelSerializer):
     storage_content_type = serializers.CharField(write_only=True, help_text="e.g. 'core.googledriveaccount'")
     storage_object_id = serializers.CharField(write_only=True)
@@ -19,31 +25,6 @@ class FileSerializer(BaseModelSerializer):
             "id": str(obj.object_id),
             "email": getattr(account, 'email', None),
         }
-
-    def validate(self, attrs):
-        attrs = super().validate(attrs)
-
-        raw_ct = attrs.pop('storage_content_type', None)
-        object_id = attrs.pop('storage_object_id', None)
-
-        if raw_ct and object_id:
-            try:
-                app_label, model = raw_ct.lower().split('.')
-                ct = ContentType.objects.get(app_label=app_label, model=model)
-                model_class = ct.model_class()
-
-                account = model_class.objects.get(id=object_id)
-                # Ensure account belongs to request user
-                if account.user != self.context['request'].user:
-                    raise serializers.ValidationError("Storage account not found.")
-
-                attrs['content_type'] = ct
-                attrs['object_id'] = account.pk
-
-            except (ValueError, ContentType.DoesNotExist, Exception):
-                raise serializers.ValidationError("Invalid storage account.")
-
-        return attrs
 
     class Meta(BaseModelSerializer.Meta):
         model = File
