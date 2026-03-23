@@ -6,8 +6,7 @@ from core.models import File, Folder
 from core.serializers import FileSerializer, FileUploadSerializer
 from manager.manager import HttpsAppResponse
 from manager.manager import custom_response_errors
-from packages.google_drive.upload_file import SmartUploadService
-import logging
+from packages.google_drive.smart_upload import SmartUploadService, SmartUploadServiceError
 
 
 class FileViewSet(BaseModelViewSet):
@@ -45,9 +44,8 @@ class FileViewSet(BaseModelViewSet):
             try:
                 service = SmartUploadService(user=request.user)
                 result  = service.upload_many(folder=folder, files=raw_files, device_id=device_id)
-            except Exception as e:
-                logging.error(str(e))
-                return HttpsAppResponse.send([], 0, str(e))
+            except SmartUploadServiceError as e:
+                return HttpsAppResponse.send([], 0, str(e.as_dict()))
 
             data = {
                 "uploaded": FileSerializer(result["uploaded"], many=True).data,

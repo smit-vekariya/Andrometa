@@ -11,6 +11,7 @@ class GoogleDriveAccount(BaseModel):
     client_id = models.CharField(max_length=255)
     client_secret = models.CharField(max_length=255)
     expiry = models.DateTimeField()
+    root_folder_id = models.CharField(max_length=255)
     total_storage = models.BigIntegerField(default=0, help_text="Total storage in bytes")
     app_used_storage = models.BigIntegerField(default=0, help_text="Used storage in bytes")
     user_used_storage = models.BigIntegerField(default=0, help_text="Used storage in bytes")

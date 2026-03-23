@@ -127,6 +127,14 @@ def google_callback(request):
             if existing_account:
                 if not refresh_token:
                     refresh_token = existing_account.refresh_token
+                new_priority = existing_account.priority
+            else:
+                max_priority = (
+                    GoogleDriveAccount.objects
+                    .filter(user=user)
+                    .aggregate(max_p=Max("priority"))["max_p"]
+                )
+                new_priority = (max_priority + 1) if max_priority is not None else 0
 
             account, created = GoogleDriveAccount.objects.update_or_create(
                 user=user,
@@ -140,6 +148,7 @@ def google_callback(request):
                     "expiry": expiry if expiry else timezone.now() + timedelta(hours=1),
                     "is_active": True,
                     "updated_by": user,
+                    "priority": new_priority,
                     **({"created_by": user} if not existing_account else {}),
                 }
             )
@@ -147,15 +156,9 @@ def google_callback(request):
             # get account storage details:
             try:
                 connector = GoogleDriveStorage(account.id)
-                storage_response = connector.get_storage_info()
+                connector.get_set_storage_info()
             except GoogleDriveStorageError as e:
                 raise Exception(e.as_dict())
-
-            account.total_storage = storage_response["total_storage"]
-            account.user_used_storage = storage_response["user_used_storage"]
-            account.app_used_storage = storage_response["app_used_storage"]
-            account.remaining_storage = storage_response["remaining_storage"]
-            account.save(update_fields=["total_storage", "user_used_storage", "app_used_storage", "remaining_storage"])
 
             return HttpsAppResponse.send({"message": "Google OAuth success", "email": email, "name": name, "access_token": access_token, "refresh_token": refresh_token,}, 1, "Google OAuth success")
     except Exception as e:

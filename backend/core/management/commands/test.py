@@ -12,7 +12,7 @@ class Command(BaseCommand):
         try:
             try:
                 connector = GoogleDriveStorage("1ee564df-8d51-4e4a-a0cd-29e782a3d12c")
-                storage_response = connector.get_storage_info()
+                storage_response = connector.get_set_storage_info()
                 print("storage_response", storage_response)
             except GoogleDriveStorageError as e:
                 raise Exception(e.as_dict())
