@@ -2,7 +2,7 @@ from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from rest_framework_simplejwt.views import TokenObtainPairView
 import logging
 from rest_framework.views import APIView
-from account.serializers import CustomUserSerializers, CustomUserListSerializers, AppForgotPasswordSerializer, AppVerifyForgotPasswordOTPSerializer, AppResetPasswordSerializer
+from account.serializers import CustomUserSerializers, CustomUserListSerializers, CustomUserProfileSerializers, AppForgotPasswordSerializer, AppVerifyForgotPasswordOTPSerializer, AppResetPasswordSerializer
 from account.models import CustomUser
 from account.backends import AdminLoginBackend, AppLoginBackend
 from manager import manager
@@ -33,30 +33,15 @@ from manager.manager import custom_response_errors
 
 # Create your views here.
 
-class UserProfile(viewsets.ViewSet):
-    def retrieve(self, request, pk=None):
+class UserProfile(APIView):
+    def get(self, request, pk=None):
         try:
             user_id = request.user.id
-            user_data = CustomUserListSerializers(CustomUser.objects.filter(id=user_id), many=True,  context={'request': request}).data
-            return HttpsAppResponse.send([user_data], 1, "User Profile data get successfully.")
+            user_data = CustomUserProfileSerializers(CustomUser.objects.filter(id=user_id), many=True,  context={'request': request}).data
+            return HttpsAppResponse.send(user_data, 1, "User Profile data get successfully.")
         except Exception as e:
             return HttpsAppResponse.exception(str(e))
 
-    def put(self, request, pk=None):
-        try:
-            data = request.data
-            if request.FILES.get('file'):
-                data["profile"] = request.FILES.get('file')
-
-            serializer = CustomUserListSerializers(CustomUser.objects.get(pk=pk), data=data)
-            if serializer.is_valid():
-                serializer.save()
-                return HttpsAppResponse.send([], 1, "User Profile Updated.")
-            else:
-                error_messages = ", ".join(value[0] for key, value in serializer.errors.items())
-                return HttpsAppResponse.send([], 0, error_messages)
-        except Exception as e:
-            return HttpsAppResponse.exception(str(e))
 
 
 class MyTokenObtainPairSerializer(TokenObtainPairSerializer):

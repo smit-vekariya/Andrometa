@@ -3,6 +3,7 @@ from account.models import CustomUser
 from django.contrib.auth.hashers import make_password
 from account.models import AuthOTP
 from django.utils import timezone
+from core.models import GoogleDriveAccount
 
 
 class CustomUserSerializers(serializers.ModelSerializer):
@@ -68,6 +69,31 @@ class CustomUserListSerializers(serializers.ModelSerializer):
         return None
 
 
+class CustomUserProfileSerializers(serializers.ModelSerializer):
+    storage_overview = serializers.SerializerMethodField()
+
+    def get_storage_overview(self, obj):
+        accounts = GoogleDriveAccount.objects.filter(user=obj, is_active=True)
+
+        total_storage     = sum(a.total_storage     for a in accounts)
+        app_used_storage  = sum(a.app_used_storage  for a in accounts)
+        user_used_storage = sum(a.user_used_storage for a in accounts)
+        remaining_storage = sum(a.remaining_storage for a in accounts)
+
+        fmt = GoogleDriveAccount._format_bytes
+        return {
+            "total_storage":     fmt(total_storage),
+            "app_used_storage":  fmt(app_used_storage),
+            "user_used_storage": fmt(user_used_storage),
+            "remaining_storage": fmt(remaining_storage),
+        }
+
+    class Meta:
+        model  = CustomUser
+        fields = ["id", "email", "full_name", "storage_overview"]
+
+
+
 class AppForgotPasswordSerializer(serializers.Serializer):
     email = serializers.EmailField()
 
@@ -82,7 +108,7 @@ class AppVerifyForgotPasswordOTPSerializer(serializers.Serializer):
     otp   = serializers.CharField()
 
     def validate(self, attrs):
-        email = attrs.get("email")  
+        email = attrs.get("email")
         otp   = attrs.get("otp")
 
         otp_record = AuthOTP.objects.filter(

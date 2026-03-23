@@ -32,8 +32,10 @@ class GoogleDriveAccount(BaseModel):
             return f"{round(b / 1024, 2)} KB"
         elif b < 1024 ** 3:
             return f"{round(b / (1024 ** 2), 2)} MB"
-        else:
+        elif b < 1024 ** 4:
             return f"{round(b / (1024 ** 3), 2)} GB"
+        else:
+            return f"{round(b / (1024 ** 4), 2)} TB"
 
     def storage_display(self) -> dict:
         return {

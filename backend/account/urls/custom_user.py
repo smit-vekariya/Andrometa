@@ -14,6 +14,8 @@ urlpatterns = [
     # path('forgot_password/send_mail/', ForgetPassword.as_view({"post":"send_mail"}), name="forgot_password_send_mail"),
     # path('forgot_password/change_password/', ForgetPassword.as_view({"post":"change_password"}), name="forgot_password_change_password"),
 
+    path('user_profile/', UserProfile.as_view(), name="user_profile"),
+
     # app login
     path('app_registration/', AppRegistration.as_view(), name="app-registration"),
     path('verify_app_registration/', VerifyAppRegistration.as_view(), name="verify-app-registration"),
