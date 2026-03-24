@@ -2,6 +2,7 @@
 from django.db import models
 from account.models import CustomUser
 from manager.base_model import BaseModel
+from manager.manager import encrypt_token, decrypt_token
 
 class GoogleDriveAccount(BaseModel):
     email = models.EmailField()
@@ -17,6 +18,21 @@ class GoogleDriveAccount(BaseModel):
     user_used_storage = models.BigIntegerField(default=0, help_text="Used storage in bytes")
     remaining_storage = models.BigIntegerField(default=0, help_text="Remaining storage in bytes")
     priority = models.PositiveIntegerField(default=0, help_text="Lower = higher priority")
+
+    def save(self, *args, **kwargs):
+        self.access_token = encrypt_token(self.access_token)
+        self.refresh_token = encrypt_token(self.refresh_token)
+        self.client_secret = encrypt_token(self.client_secret)
+        super().save(*args, **kwargs)
+
+    def get_access_token(self):
+        return decrypt_token(self.access_token)
+
+    def get_refresh_token(self):
+        return decrypt_token(self.refresh_token)
+
+    def get_client_secret(self):
+        return decrypt_token(self.client_secret)
 
 
     def __str__(self):

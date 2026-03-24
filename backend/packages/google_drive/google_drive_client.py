@@ -6,6 +6,7 @@ from django.utils import timezone
 from core.models import GoogleDriveAccount
 from datetime import datetime, timedelta
 import logging
+from manager.manager import decrypt_token
 
 _DRIVE_CLIENTS = {}
 
@@ -32,11 +33,11 @@ def _build_credentials(data: dict) -> Credentials:
     if expiry and timezone.is_aware(expiry):
         expiry = expiry.replace(tzinfo=None)
     return Credentials(
-        token=data["access_token"],
-        refresh_token=data["refresh_token"],
+        token=decrypt_token(data["access_token"]),
+        refresh_token=decrypt_token(data["refresh_token"]),
         token_uri=data["token_uri"],
         client_id=data["client_id"],
-        client_secret=data["client_secret"],
+        client_secret=decrypt_token(data["client_secret"]),
         expiry=expiry,
     )
 

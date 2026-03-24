@@ -38,3 +38,16 @@ class FileSerializer(BaseModelSerializer):
             'created_by', 'updated_by',
         ]
         read_only_fields = ['id', 'user', 'storage_account_repr']
+
+
+class FileListSerializer(BaseModelSerializer):
+    class Meta(BaseModelSerializer.Meta):
+        model = File
+        fields = [
+            'id',
+            'file_name', 'file_type', 'mime_type', 'size_bytes',
+            'remote_file_id', 'remote_file_path', 'remote_view_url',
+            'local_media_id',
+            'created_at',
+        ]
+        read_only_fields = ['id']

@@ -58,9 +58,8 @@ class SmartUploadService:
         uploaded = service.files().create(
             body=metadata,
             media_body=media,
-            fields="id, webViewLink, webContentLink, thumbnailLink"
+            fields="id, webViewLink, webContentLink"
         ).execute()
-
         content_type = ContentType.objects.get_for_model(GoogleDriveAccount)
         file_obj = File.objects.create(
             user=self.user,
@@ -75,7 +74,6 @@ class SmartUploadService:
             remote_file_path=f"/{settings.ROOT_FOLDER_NAME}/{file_name}",
             remote_view_url=uploaded.get("webViewLink"),
             remote_download_url=uploaded.get("webContentLink"),
-            remote_thumbnail_url=uploaded.get("thumbnailLink"),
             device_id=device_id,
         )
         # storage.get_set_storage_info() # update storage manually in database no need to call api every time

@@ -21,6 +21,18 @@ from account.models import CustomUser
 from rest_framework.views import exception_handler
 from rest_framework.exceptions import ValidationError
 from rest_framework import status
+from cryptography.fernet import Fernet
+from django.conf import settings
+
+
+fernet = Fernet(settings.TOKEN_ENCRYPTION_KEY)
+
+def encrypt_token(token: str) -> str:
+    return fernet.encrypt(token.encode()).decode()
+
+
+def decrypt_token(token: str) -> str:
+    return fernet.decrypt(token.encode()).decode()
 
 
 def custom_response_errors(responses):

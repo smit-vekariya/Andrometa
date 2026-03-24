@@ -160,27 +160,7 @@ def google_callback(request):
             except GoogleDriveStorageError as e:
                 raise Exception(e.as_dict())
 
-            return HttpsAppResponse.send({"message": "Google OAuth success", "email": email, "name": name, "access_token": access_token, "refresh_token": refresh_token,}, 1, "Google OAuth success")
-    except Exception as e:
-        return HttpsAppResponse.exception(str(e))
-
-
-@api_view(["POST"])
-def refresh_google_token(request):
-    try:
-        refresh_token = request.data.get("refresh_token")
-
-        creds = Credentials(
-            token=None,
-            refresh_token=refresh_token,
-            token_uri="https://oauth2.googleapis.com/token",
-            client_id=settings.GOOGLE_CLIENT_ID,
-            client_secret=settings.GOOGLE_CLIENT_SECRET,
-        )
-
-        creds.refresh(Request())
-
-        return HttpsAppResponse.send({"access_token": creds.token}, 1, "Google OAuth success")
+            return HttpsAppResponse.send({"message": "Google OAuth success", "email": email, "name": name}, 1, "Google OAuth success")
     except Exception as e:
         return HttpsAppResponse.exception(str(e))
 
