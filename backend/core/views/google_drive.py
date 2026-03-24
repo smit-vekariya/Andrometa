@@ -3,8 +3,6 @@ import os
 from django.conf import settings
 from rest_framework.decorators import api_view
 from google_auth_oauthlib.flow import Flow
-from google.oauth2.credentials import Credentials
-from google.auth.transport.requests import Request
 from manager.manager import HttpsAppResponse
 from core.models import GoogleDriveAccount
 from datetime import timedelta
@@ -16,6 +14,7 @@ from account.models import CustomUser
 from manager.base_view import BaseModelViewSet
 from packages.google_drive.get_storage import GoogleDriveStorageError, GoogleDriveStorage
 from core.serializers import GoogleDriveAccountSerializer
+from django.db.models import Max
 
 
 
