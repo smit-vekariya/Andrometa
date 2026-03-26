@@ -45,9 +45,8 @@ class FileListSerializer(BaseModelSerializer):
         model = File
         fields = [
             'id',
-            'file_name', 'file_type', 'mime_type', 'size_bytes',
-            'remote_file_id', 'remote_file_path', 'remote_view_url',
-            'local_media_id',
+            'file_name', 'file_type', 'size_bytes',
+            'remote_file_id', 'remote_view_url', 'remote_thumbnail_url',
             'created_at',
         ]
         read_only_fields = ['id']
