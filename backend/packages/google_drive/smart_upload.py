@@ -105,6 +105,13 @@ class SmartUploadService:
                             file_name, mime_type, device_id
                         )
                         uploaded.append(file_obj)
+                        
+                        try:
+                            from core.tasks import fetch_google_drive_thumbnail
+                            fetch_google_drive_thumbnail.apply_async(args=[str(file_obj.id)], countdown=30)
+                        except Exception as t_e:
+                            logging.warning(f"Failed to queue thumbnail fetching: {str(t_e)}")
+                            
                         success = True
                         break
                     except GoogleDriveStorageError as e:
