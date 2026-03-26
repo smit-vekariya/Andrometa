@@ -105,13 +105,7 @@ class SmartUploadService:
                             file_name, mime_type, device_id
                         )
                         uploaded.append(file_obj)
-                        
-                        try:
-                            from core.tasks import fetch_google_drive_thumbnail
-                            fetch_google_drive_thumbnail.apply_async(args=[str(file_obj.id)], countdown=30)
-                        except Exception as t_e:
-                            logging.warning(f"Failed to queue thumbnail fetching: {str(t_e)}")
-                            
+
                         success = True
                         break
                     except GoogleDriveStorageError as e:
@@ -120,6 +114,14 @@ class SmartUploadService:
 
                 if not success:
                     failed.append({"file_name": file_name, "error": "All accounts full or unavailable."})
+
+            if uploaded:
+                try:
+                    from core.tasks import fetch_google_drive_thumbnail
+                    file_ids = [str(f.id) for f in uploaded]
+                    fetch_google_drive_thumbnail.apply_async(args=[file_ids], countdown=30)
+                except Exception as t_e:
+                    logging.warning(f"Failed to queue batch thumbnail fetching: {str(t_e)}")
 
             return {"uploaded": uploaded, "failed": failed}
         except Exception as e:

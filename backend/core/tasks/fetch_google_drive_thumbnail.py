@@ -1,47 +1,57 @@
 from celery import shared_task
 from core.models import File
 from packages.google_drive.google_drive_client import get_drive_client
+from collections import defaultdict
+from manager.manager import create_from_exception
 import logging
 
 
 @shared_task(bind=True, max_retries=5)
-def fetch_google_drive_thumbnail(self, file_id):
+def fetch_google_drive_thumbnail(self, file_ids):
     try:
-        file_obj = File.objects.get(id=file_id)
-        if file_obj.remote_thumbnail_url:
-            return "Thumbnail already exists"
+        if not isinstance(file_ids, list):
+            file_ids = [file_ids]
 
-        # We only work with files stored on Google Drive
-        account_id = file_obj.object_id
-        service = get_drive_client(str(account_id))
+        files = list(File.objects.filter(id__in=file_ids, remote_thumbnail_url__isnull=True))
+        if not files:
+            return "All thumbnails already exist or no files found."
 
-        remote_file = service.files().get(
-            fileId=file_obj.remote_file_id,
-            fields="hasThumbnail, thumbnailLink"
-        ).execute()
+        pending_file_ids = []
+        account_files = defaultdict(list)
 
-        if remote_file.get("hasThumbnail") and remote_file.get("thumbnailLink"):
-            file_obj.remote_thumbnail_url = remote_file.get("thumbnailLink")
-            file_obj.save(update_fields=["remote_thumbnail_url"])
-            return f"Thumbnail fetched and saved: {file_obj.remote_thumbnail_url}"
-        else:
-            # Thumbnail not yet generated, retry after 60 seconds
-            raise self.retry(countdown=60)
+        for file_obj in files:
+            account_files[str(file_obj.object_id)].append(file_obj)
 
-    except File.DoesNotExist:
-        logging.warning(f"File {file_id} not found for thumbnail fetching.")
-        return "File not found"
-    except Exception as exc:
-        # Avoid logging the Exception if it's just a Retry
-        if hasattr(exc, 'message') and getattr(exc, 'message', '') == 'Retry':
-            pass
-        elif hasattr(self.retry, 'TaskRetry') and isinstance(exc, getattr(self.retry, 'TaskRetry', type('Dummy', (Exception,), {}))):
-            pass
-        else:
-            logging.exception(f"Error fetching thumbnail for file {file_id}: {str(exc)}")
+        for account_id, acct_files in account_files.items():
+            try:
+                service = get_drive_client(account_id)
+                for file_obj in acct_files:
+                    try:
+                        remote_file = service.files().get(
+                            fileId=file_obj.remote_file_id,
+                            fields="hasThumbnail, thumbnailLink"
+                        ).execute()
 
-        # If it's not a Retry exception we re-raise it as one to retry
-        if not hasattr(exc, 'args') or 'Retry in' not in str(exc):
-            raise self.retry(exc=exc, countdown=60)
-        else:
-            raise exc
+                        if remote_file.get("hasThumbnail") and remote_file.get("thumbnailLink"):
+                            file_obj.remote_thumbnail_url = remote_file.get("thumbnailLink")
+                            file_obj.save(update_fields=["remote_thumbnail_url"])
+                        else:
+                            pending_file_ids.append(str(file_obj.id))
+                    except Exception as file_exc:
+                        logging.warning(f"Failed to fetch thumbnail for {file_obj.remote_file_id}: {str(file_exc)}")
+                        pending_file_ids.append(str(file_obj.id))
+
+            except Exception as exc:
+                create_from_exception(e)
+                logging.exception(f"Error initializing client for account {account_id}: {str(exc)}")
+                pending_file_ids.extend([str(file_obj.id) for file_obj in acct_files])
+
+        if pending_file_ids:
+            try:
+                raise self.retry(args=[pending_file_ids], countdown=60)
+            except self.MaxRetriesExceededError:
+                logging.warning(f"Max retries exceeded for missing thumbnails: {pending_file_ids}")
+
+        return f"Finished batch. {len(files) - len(pending_file_ids)} ok, {len(pending_file_ids)} pending"
+    except Exception as e:
+        create_from_exception(e)
