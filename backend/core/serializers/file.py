@@ -13,7 +13,6 @@ class FileUploadSerializer(serializers.Serializer):
 class FileSerializer(BaseModelSerializer):
     storage_content_type = serializers.CharField(write_only=True, help_text="e.g. 'core.googledriveaccount'")
     storage_object_id = serializers.CharField(write_only=True)
-
     storage_account_repr = serializers.SerializerMethodField()
 
     def get_storage_account_repr(self, obj):

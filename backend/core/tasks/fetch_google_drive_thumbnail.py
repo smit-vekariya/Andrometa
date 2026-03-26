@@ -42,7 +42,7 @@ def fetch_google_drive_thumbnail(self, file_ids):
                         pending_file_ids.append(str(file_obj.id))
 
             except Exception as exc:
-                create_from_exception(e)
+                create_from_exception(exc)
                 logging.exception(f"Error initializing client for account {account_id}: {str(exc)}")
                 pending_file_ids.extend([str(file_obj.id) for file_obj in acct_files])
 
