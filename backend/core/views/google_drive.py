@@ -34,6 +34,10 @@ def google_auth_url(request):
         if not user or user.is_anonymous:
             return HttpsAppResponse.send({}, 0, "User not authenticated", 401)
 
+        account_count = GoogleDriveAccount.objects.filter(user=user, is_deleted=False, is_active=True).count()
+        if account_count >= settings.MAX_GOOGLE_DRIVE_ACCOUNT:
+            return HttpsAppResponse.send({}, 0, f"You can only link up to {settings.MAX_GOOGLE_DRIVE_ACCOUNT} Google Drive accounts.", 403)
+
         flow = Flow.from_client_config(
             client_config={
                 "web": {

@@ -271,3 +271,6 @@ GOOGLE_SCOPES = [
     "https://www.googleapis.com/auth/userinfo.profile",
     "https://www.googleapis.com/auth/drive.file",
 ]
+
+
+MAX_GOOGLE_DRIVE_ACCOUNT=env("MAX_GOOGLE_DRIVE_ACCOUNT")

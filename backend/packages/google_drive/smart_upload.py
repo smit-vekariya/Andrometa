@@ -24,7 +24,7 @@ class SmartUploadService:
 
     def _get_accounts(self):
         return GoogleDriveAccount.objects.filter(
-            user=self.user, is_active=True
+            user=self.user, is_active=True, is_deleted=False
         ).order_by('priority')
 
     def _refresh_and_check_space(self, account, file_size) -> bool:
