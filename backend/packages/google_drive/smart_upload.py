@@ -49,8 +49,55 @@ class SmartUploadService:
         if "zip" in mime_type or "compressed" in mime_type: return "ZIP"
         return "OTHER"
 
+    def _ensure_valid_root_folder(self, account, service):
+        folder_id = account.root_folder_id
+        valid = False
+
+        if folder_id:
+            try:
+                folder = service.files().get(fileId=folder_id, fields="id, trashed").execute()
+                if folder.get('trashed'):
+                    # Restore from trash
+                    service.files().update(fileId=folder_id, body={'trashed': False}).execute()
+                valid = True
+            except Exception as e:
+                logging.exception(str(e))
+                # Folder permanently deleted or not accessible
+                valid = False
+
+        if not valid:
+            folder_name = settings.ROOT_FOLDER_NAME
+            # Check if an untrashed folder with this name already exists
+            results = service.files().list(
+                q=f"name='{folder_name}' and mimeType='application/vnd.google-apps.folder' and trashed=false",
+                spaces="drive",
+                fields="files(id)"
+            ).execute()
+            files = results.get("files", [])
+
+            if files:
+                account.root_folder_id = files[0]["id"]
+            else:
+                # Create a new folder
+                file_metadata = {
+                    "name": folder_name,
+                    "mimeType": "application/vnd.google-apps.folder",
+                }
+                new_folder = service.files().create(body=file_metadata, fields="id").execute()
+                account.root_folder_id = new_folder.get("id")
+
+            account.save(update_fields=["root_folder_id"])
+
     def _upload_single(self, account, folder, file_bytes, file_name, mime_type, device_id) -> File:
         service = get_drive_client(str(account.id))
+
+        # Ensure folder exists and is not trashed. Using a set to avoid doing this on every loop iteration.
+        if not hasattr(self, '_validated_accounts'):
+            self._validated_accounts = set()
+
+        if account.id not in self._validated_accounts:
+            self._ensure_valid_root_folder(account, service)
+            self._validated_accounts.add(account.id)
 
         media = MediaIoBaseUpload(io.BytesIO(file_bytes), mimetype=mime_type, resumable=True)
         metadata = {"name": file_name, "parents": [account.root_folder_id]}
