@@ -11,6 +11,7 @@ from django.utils import timezone
 from postoffice.serializers import EmailLogSerializer
 from django.core.mail import EmailMessage
 from celery import shared_task
+from django.template.loader import render_to_string
 
 
 # for multiple receiver, cc, bcc add comma sepreter
@@ -52,7 +53,7 @@ class SendMail(APIView):
     def send_mail_now(mail_id):
         mail = EmailLog.objects.get(id=mail_id)
         try:
-            sender = mail.mail_from
+            sender = f"Plus Drive <{mail.mail_from}>"
             receiver = [email.strip() for email in mail.mail_to.split(',')]
             subject = mail.subject
             message = mail.message
@@ -60,6 +61,8 @@ class SendMail(APIView):
             bcc = [email.strip() for email in mail.mail_bcc.split(',')] if mail.mail_bcc else []
 
             email = EmailMessage(subject, message, sender, receiver, bcc, cc=cc)
+            if message and message.strip().lower().startswith("<!doctype html"):
+                email.content_subtype = "html"
             email.send(fail_silently=True)
 
             mail.status = 'sent'
@@ -95,19 +98,30 @@ def send_whatsapp_message(message):
     except Exception  as e:
       return HttpsAppResponse.exception(str(e))
 
-def send_otp_to_email(email: str) -> int | str:
+def send_otp_to_email(email: str, purpose: str) -> int | str:
     try:
         if not email:
             return "Email is required."
 
         otp = random.randint(100000, 999999)
+        logo_url = f"{settings.BACK_END_BASE_URL}/static/images/logo.png"
+        context = {"otp": otp, "year": timezone.now().year, "logo_url": logo_url}
+
+        if purpose == "forgot_password":
+            subject = "Reset Your Password - OTP"
+            message = render_to_string("postoffice/forgot_password_otp.html", context)
+        elif purpose == "registration":
+            subject = "Complete Your Registration - OTP Code"
+            message = render_to_string("postoffice/registration_otp.html", context)
+        else:
+            raise Exception("Invalid purpose")
 
         is_send, msg = SendMail.send_mail(
             action_by=None,
             is_now=True,
             receiver=email,
-            subject="OTP Code",
-            message=f"Your OTP is {otp}. It will expire in 5 minutes. Do not share it with anyone.",
+            subject=subject,
+            message=message,
         )
 
         if is_send:

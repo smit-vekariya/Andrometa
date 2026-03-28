@@ -94,7 +94,7 @@ class AppRegistration(APIView):
                 )
                 return HttpsAppResponse.send([], 0, error_messages)
 
-            otp = send_otp_to_email(request.data["email"])
+            otp = send_otp_to_email(request.data["email"], purpose="registration")
             if len(str(otp)) > 6:
                 return HttpsAppResponse.send([], 0, otp)
 
@@ -241,7 +241,7 @@ class AppForgotPassword(APIView):
                 return HttpsAppResponse.send([], 0, custom_response_errors(serializer.errors))
 
             email = serializer.validated_data["email"]
-            otp = send_otp_to_email(email)
+            otp = send_otp_to_email(email, purpose="forgot_password")
             if len(str(otp)) > 6:
                 return HttpsAppResponse.send([], 0, otp)
 

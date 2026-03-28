@@ -4,6 +4,7 @@ from datetime import timedelta
 from django.utils import timezone
 from account.models import Country, State, City
 import uuid
+from django.conf import settings
 
 
 def upload_location(instance, filename):
@@ -78,6 +79,6 @@ class AuthOTP(models.Model):
     created_on = models.DateTimeField(null=True, blank=True)
 
     def save(self, *args, **kwargs):
-        self.expire_on = self.created_on + timedelta(minutes=1)
+        self.expire_on = self.created_on + timedelta(minutes=int(settings.OTP_EXPIRY_MINUTES))
         super(AuthOTP, self).save(*args, **kwargs)
 

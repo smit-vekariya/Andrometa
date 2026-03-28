@@ -65,12 +65,12 @@ class GoogleDriveStorage:
                 fields="nextPageToken, files(id, mimeType, size)"
             ).execute()
 
-            for f in results.get("files", []):
-                if f["mimeType"] == "application/vnd.google-apps.folder":
+            for file in results.get("files", []):
+                if file["mimeType"] == "application/vnd.google-apps.folder":
                     # recurse into sub folders
-                    total += self._get_folder_size(f["id"])
+                    total += self._get_folder_size(file["id"])
                 else:
-                    total += int(f.get("size", 0))
+                    total += int(file.get("size", 0))
 
             page_token = results.get("nextPageToken")
             if not page_token:
