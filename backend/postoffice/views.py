@@ -101,7 +101,7 @@ def send_whatsapp_message(message):
 def send_otp_to_email(email: str, purpose: str) -> int | str:
     try:
         if not email:
-            return "Email is required."
+            return False, "Email is required."
 
         otp = random.randint(100000, 999999)
         logo_url = f"{settings.BACK_END_BASE_URL}/static/images/logo.png"
@@ -125,18 +125,18 @@ def send_otp_to_email(email: str, purpose: str) -> int | str:
         )
 
         if is_send:
-            return otp
+            return True, otp
         else:
             create_from_text(
                 "Error in OTP sending", "Important", 10,
                 f"response => {msg}, info => email: '{email}' otp: '{otp}'"
             )
-            return "We encountered an issue while sending the OTP. Please try again later."
+            return False, "We encountered an issue while sending the OTP. Please try again later."
 
     except Exception as e:
         logging.exception("Something went wrong.")
         create_from_exception(e)
-        return 0
+        return False, "We encountered an issue while sending the OTP. Please try again later."
 
 
 def send_otp_to_mobile(mobile_no):

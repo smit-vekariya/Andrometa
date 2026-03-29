@@ -1,5 +1,4 @@
-from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
-from rest_framework_simplejwt.views import TokenObtainPairView
+
 import logging
 from rest_framework.views import APIView
 from account.serializers import CustomUserSerializers, CustomUserListSerializers, CustomUserProfileSerializers, AppForgotPasswordSerializer, AppVerifyForgotPasswordOTPSerializer, AppResetPasswordSerializer
@@ -27,8 +26,7 @@ from account.models import AuthOTP
 from django.utils import timezone
 import json
 from manager.manager import custom_response_errors
-
-
+from account.authentication import MyTokenObtainPairSerializer
 
 
 # Create your views here.
@@ -43,23 +41,6 @@ class UserProfile(APIView):
             return HttpsAppResponse.exception(str(e))
 
 
-
-class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
-    @classmethod
-    def get_token(cls, user):
-        try:
-            token = super().get_token(user)
-            token['email'] = user.email
-            access_token =  str(token.access_token)
-            refresh_token = str(token)
-            UserToken.objects.update_or_create(user_id=user.id,defaults={'access_token': access_token})
-            update_last_login(None, user)
-            response=[{"access":str(access_token),"refresh":refresh_token}]
-            return response
-        except Exception as e:
-            logging.exception("Something went wrong.")
-            manager.create_from_exception(e)
-
 class AppLogin(APIView):
     authentication_classes =[]
     permission_classes = []
@@ -72,7 +53,7 @@ class AppLogin(APIView):
                 user = AppLoginBackend.authenticate(request, email=email, password=password)
                 if user:
                     tokens = MyTokenObtainPairSerializer.get_token(user)
-                    return HttpsAppResponse.send(tokens, 1, "Login successfully")
+                    return HttpsAppResponse.send([{"access":str(tokens.access_token),"refresh":str(tokens)}], 1, "Login successfully")
                 else:
                     return HttpsAppResponse.send([], 0, "User is not found with this credential.")
             else:
@@ -94,8 +75,8 @@ class AppRegistration(APIView):
                 )
                 return HttpsAppResponse.send([], 0, error_messages)
 
-            otp = send_otp_to_email(request.data["email"], purpose="registration")
-            if len(str(otp)) > 6:
+            response, otp = send_otp_to_email(request.data["email"], purpose="registration")
+            if not response:
                 return HttpsAppResponse.send([], 0, otp)
 
             AuthOTP.objects.update_or_create(
@@ -150,7 +131,7 @@ class VerifyAppRegistration(APIView):
             user_data.delete()
 
             tokens = MyTokenObtainPairSerializer.get_token(user)
-            return HttpsAppResponse.send(tokens, 1, "Registration successful.")
+            return HttpsAppResponse.send([{"access":str(tokens.access_token),"refresh":str(tokens)}], 1, "Registration successful.")
 
         except Exception as e:
             return HttpsAppResponse.exception(str(e))
@@ -167,11 +148,6 @@ class AppLogout(APIView):
         except Exception as e:
             return HttpsAppResponse.exception(str(e))
 
-
-class MyTokenObtainPairView(TokenObtainPairView):
-    serializer_class = MyTokenObtainPairSerializer
-
-
 class AdminLogin(APIView):
     authentication_classes =[]
     permission_classes = []
@@ -184,7 +160,7 @@ class AdminLogin(APIView):
                 user = AdminLoginBackend.authenticate(request, email=email, password=password)
                 if user:
                     tokens = MyTokenObtainPairSerializer.get_token(user)
-                    return HttpsAppResponse.send(tokens, 1, "Login successfully")
+                    return HttpsAppResponse.send([{"access":str(tokens.access_token),"refresh":str(tokens)}], 1, "Login successfully")
                 else:
                     return HttpsAppResponse.send([], 0, "User is not found with this credential.")
             else:
@@ -241,8 +217,8 @@ class AppForgotPassword(APIView):
                 return HttpsAppResponse.send([], 0, custom_response_errors(serializer.errors))
 
             email = serializer.validated_data["email"]
-            otp = send_otp_to_email(email, purpose="forgot_password")
-            if len(str(otp)) > 6:
+            response, otp = send_otp_to_email(email, purpose="forgot_password")
+            if not response:
                 return HttpsAppResponse.send([], 0, otp)
 
             AuthOTP.objects.update_or_create(
