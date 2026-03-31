@@ -10,15 +10,19 @@ class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
     def get_token(cls, user):
         token = super().get_token(user)
         token['email'] = user.email
-        cls.store_token(user, str(token.access_token))
+        # Generate access token string ONCE and cache it to avoid
+        # re-generation (simplejwt creates a new token on each str() call)
+        access_token_str = str(token.access_token)
+        token._cached_access_token_str = access_token_str
+        cls.store_token(user, access_token_str)
         return token
 
     @staticmethod
-    def store_token(user, token):
+    def store_token(user, access_token_str):
         update_last_login(None, user)
         UserToken.objects.update_or_create(
             user=user,
-            defaults={'access_token': token}
+            defaults={'access_token': access_token_str}
         )
 
     def validate(self, attrs):

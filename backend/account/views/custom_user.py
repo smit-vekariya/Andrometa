@@ -53,7 +53,7 @@ class AppLogin(APIView):
                 user = AppLoginBackend.authenticate(request, email=email, password=password)
                 if user:
                     tokens = MyTokenObtainPairSerializer.get_token(user)
-                    return HttpsAppResponse.send([{"access":str(tokens.access_token),"refresh":str(tokens)}], 1, "Login successfully")
+                    return HttpsAppResponse.send([{"access": tokens._cached_access_token_str, "refresh": str(tokens)}], 1, "Login successfully")
                 else:
                     return HttpsAppResponse.send([], 0, "User is not found with this credential.")
             else:
@@ -70,10 +70,7 @@ class AppRegistration(APIView):
         try:
             serializer = CustomUserSerializers(data=request.data)
             if not serializer.is_valid():
-                error_messages = ", ".join(
-                    value[0] for key, value in serializer.errors.items()
-                )
-                return HttpsAppResponse.send([], 0, error_messages)
+                return HttpsAppResponse.send([], 0, custom_response_errors(serializer.errors))
 
             response, otp = send_otp_to_email(request.data["email"], purpose="registration")
             if not response:
@@ -122,16 +119,13 @@ class VerifyAppRegistration(APIView):
 
             serializer = CustomUserSerializers(data=data)
             if not serializer.is_valid():
-                error_messages = ", ".join(
-                    value[0] for key, value in serializer.errors.items()
-                )
-                return HttpsAppResponse.send([], 0, error_messages)
+                return HttpsAppResponse.send([], 0, custom_response_errors(serializer.errors))
 
             user = serializer.save()
             user_data.delete()
 
             tokens = MyTokenObtainPairSerializer.get_token(user)
-            return HttpsAppResponse.send([{"access":str(tokens.access_token),"refresh":str(tokens)}], 1, "Registration successful.")
+            return HttpsAppResponse.send([{"access": tokens._cached_access_token_str, "refresh": str(tokens)}], 1, "Registration successful.")
 
         except Exception as e:
             return HttpsAppResponse.exception(str(e))
@@ -160,7 +154,7 @@ class AdminLogin(APIView):
                 user = AdminLoginBackend.authenticate(request, email=email, password=password)
                 if user:
                     tokens = MyTokenObtainPairSerializer.get_token(user)
-                    return HttpsAppResponse.send([{"access":str(tokens.access_token),"refresh":str(tokens)}], 1, "Login successfully")
+                    return HttpsAppResponse.send([{"access": tokens._cached_access_token_str, "refresh": str(tokens)}], 1, "Login successfully")
                 else:
                     return HttpsAppResponse.send([], 0, "User is not found with this credential.")
             else:
@@ -192,8 +186,7 @@ class RegisterUser(APIView):
                 serializer.save()
                 return HttpsAppResponse.send([], 1, "Registration successfully")
             else:
-                error_messages = ", ".join(f"({key}) {value[0]}" for key, value in serializer.errors.items())
-                return HttpsAppResponse.send([], 0, error_messages)
+                return HttpsAppResponse.send([], 0, custom_response_errors(serializer.errors))
         except Exception as e:
             return HttpsAppResponse.exception(str(e))
 
