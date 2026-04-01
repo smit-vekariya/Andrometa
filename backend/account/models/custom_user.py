@@ -32,9 +32,9 @@ class CustomUserManager(BaseUserManager):
 
 class CustomUser(AbstractBaseUser, PermissionsMixin):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    email = models.EmailField(unique=True)
     full_name = models.CharField(max_length=50)
     mobile = models.CharField(max_length=50,null=True, blank=True, unique=True)
-    email = models.EmailField(unique=True)
     address = models.CharField(max_length=200, null=True, blank=True)
     pin_code = models.CharField(max_length=10, null=True, blank=True)
     city = models.ForeignKey(City, on_delete=models.CASCADE, null=True, blank=True)

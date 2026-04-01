@@ -142,62 +142,6 @@ class AppLogout(APIView):
         except Exception as e:
             return HttpsAppResponse.exception(str(e))
 
-class AdminLogin(APIView):
-    authentication_classes =[]
-    permission_classes = []
-
-    def post(self,request):
-        try:
-            email = request.data["email"]
-            password = request.data["password"]
-            if email and password:
-                user = AdminLoginBackend.authenticate(request, email=email, password=password)
-                if user:
-                    tokens = MyTokenObtainPairSerializer.get_token(user)
-                    return HttpsAppResponse.send([{"access": tokens._cached_access_token_str, "refresh": str(tokens)}], 1, "Login successfully")
-                else:
-                    return HttpsAppResponse.send([], 0, "User is not found with this credential.")
-            else:
-                return HttpsAppResponse.send([], 0, "Email and password is require.")
-        except Exception as e:
-            return HttpsAppResponse.exception(str(e))
-
-
-class RegisterUser(APIView):
-    authentication_classes =[]
-    permission_classes = []
-    def get(self, request):
-        try:
-            user_id = request.query_params.get("pk")
-            user_instance = CustomUser.objects.get(id=user_id)
-            user_data = CustomUserListSerializers(user_instance, context={'request': request}).data
-            return HttpsAppResponse.send([user_data], 1, "data get successfully.")
-        except Exception as e:
-            return HttpsAppResponse.exception(str(e))
-
-    def post(self, request):
-        try:
-            user_id = self.request.query_params.get("id","")
-            if user_id:
-                serializer = CustomUserSerializers(instance=CustomUser.objects.get(id=user_id), data=request.data["registerForm"], partial=True)
-            else:
-                serializer = CustomUserSerializers(data=request.data["registerForm"])
-            if serializer.is_valid():
-                serializer.save()
-                return HttpsAppResponse.send([], 1, "Registration successfully")
-            else:
-                return HttpsAppResponse.send([], 0, custom_response_errors(serializer.errors))
-        except Exception as e:
-            return HttpsAppResponse.exception(str(e))
-
-    def delete(self, request):
-        try:
-            user_id = self.request.query_params.get("id","")
-            CustomUser.objects.get(id=user_id).soft_delete()
-            return HttpsAppResponse.send([], 1, "User deleted successfully")
-        except Exception as e:
-            return HttpsAppResponse.exception(str(e))
-
 
 class AppForgotPassword(APIView):
     authentication_classes = []
@@ -268,64 +212,5 @@ class AppResetPassword(APIView):
 
             otp_record.delete()
             return HttpsAppResponse.send([], 1, "Password reset successfully.")
-        except Exception as e:
-            return HttpsAppResponse.exception(str(e))
-
-
-class ForgetPassword(ViewSet):
-    authentication_classes = []
-    permission_classes = []
-
-    def send_mail(self, request, *args, **kwargs):
-        try:
-            email = request.data["email"]
-            try:
-                email_user =  CustomUser.objects.get(email=email, is_active=True, is_deleted=False)
-            except ObjectDoesNotExist:
-               return HttpsAppResponse.send([], 0, "This email is not registered or account is not active.")
-
-            uid = urlsafe_base64_encode(force_bytes(email_user.id))
-            token = default_token_generator.make_token(email_user)
-
-            reset_link = f"{settings.FRONT_END_BASE_URL}/change_password/{uid}/{token}"
-
-            subject = "Reset Your Password - PanelPrime"
-            message =  textwrap.dedent(f'''
-                Hi {email_user.full_name},
-
-                We received a request to reset your password for your PanelPrime account.
-                Please click the link below to reset your password:
-
-                { reset_link }
-
-                If you didn’t request this, you can safely ignore this email.
-
-                Thanks,
-                The PanelPrime Team
-            ''')
-
-            is_send, msg = SendMail.send_mail(None, True, email, subject, message)
-            if not is_send:
-                return HttpsAppResponse.send([], 0, msg)
-            return HttpsAppResponse.send([], 1, "Check your email for the password reset link.")
-        except Exception as e:
-            return HttpsAppResponse.exception(str(e))
-
-    def change_password(self, request, *args, **kwargs):
-        try:
-            data = request.data
-            uid = data.get("uid")
-            token = data.get("token")
-            password = data.get("password")
-
-            uid = urlsafe_base64_decode(uid).decode()
-            user = get_user_model().objects.get(pk=uid)
-
-            if default_token_generator.check_token(user, token):
-                user.set_password(password)
-                user.save()
-                return HttpsAppResponse.send([], 1, "Password has been change successfully.")
-            else:
-                return HttpsAppResponse.send([], 0, "Invalid or expired token")
         except Exception as e:
             return HttpsAppResponse.exception(str(e))

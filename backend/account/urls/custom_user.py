@@ -1,20 +1,13 @@
 
-from django.urls import path, include
+from django.urls import path
 from account.views import *
-from rest_framework.routers import DefaultRouter
-from rest_framework_simplejwt.views import TokenRefreshView
 from account.authentication import MyTokenObtainPairView, MyTokenRefreshView
-
 
 app_name = "account"
 
 urlpatterns = [
     path('token/', MyTokenObtainPairView.as_view(), name='token_obtain_pair'),
     path('token/refresh/', MyTokenRefreshView.as_view(), name='token_refresh'),
-    # path('register/', RegisterUser.as_view(), name='register'),
-    # path('forgot_password/send_mail/', ForgetPassword.as_view({"post":"send_mail"}), name="forgot_password_send_mail"),
-    # path('forgot_password/change_password/', ForgetPassword.as_view({"post":"change_password"}), name="forgot_password_change_password"),
-
     path('user_profile/', UserProfile.as_view(), name="user_profile"),
 
     # app login
@@ -26,9 +19,4 @@ urlpatterns = [
     path("app_forgot_password/", AppForgotPassword.as_view(), name="app-forgot-password"),
     path("app_verify_forgot_otp/", AppVerifyForgotPasswordOTP.as_view(), name="app-verify-forgot-otp"),
     path("app_reset_password/", AppResetPassword.as_view(), name="app-reset-password"),
-
-    #adminpanel api
-    # path('admin_login/', AdminLogin.as_view(), name='admin_login'),
-    # path('user_profile/', UserProfile.as_view({'get': 'retrieve'}), name="user_profile"),
-    # path('edit_profile/<int:pk>', UserProfile.as_view({'get': 'put'}), name="edit_profile")
 ]
