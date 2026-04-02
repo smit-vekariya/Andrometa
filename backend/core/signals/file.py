@@ -31,11 +31,30 @@ def fetch_thumbnail_with_retry(file_id, account_id, remote_file_id, delay=60):
     thread.daemon = True
     thread.start()
 
+def can_have_thumbnail(mime_type: str) -> bool:
+    if not mime_type:
+        return False
+
+    if any(mime_type.startswith(prefix) for prefix in ["image/", "video/"]):
+        return True
+
+    return mime_type in  [
+        "application/pdf",
+        "application/vnd.google-apps.document",
+        "application/vnd.google-apps.spreadsheet",
+        "application/vnd.google-apps.presentation",
+    ]
+
 @receiver(post_save, sender=File)
 def fetch_google_drive_thumbnail(sender, instance, created, **kwargs):
     if instance.remote_file_id and not instance.remote_thumbnail_url and instance.object_id:
         # Only process if this is a Google Drive file
         if getattr(instance, 'content_type', None) and instance.content_type.model == 'googledriveaccount':
+
+            #  NEW: skip unsupported mime types EARLY
+            if not can_have_thumbnail(instance.mime_type):
+                return
+
             account_id = str(instance.object_id)
             try:
                 service = get_drive_client(account_id)
