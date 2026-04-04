@@ -61,3 +61,8 @@ class GoogleDriveAccount(BaseModel):
             "app_used_storage":  self._format_bytes(self.app_used_storage),
             "remaining_storage": self._format_bytes(self.remaining_storage),
         }
+
+    def add_app_used_storage(self, size_bytes):
+        self.remaining_storage -= size_bytes
+        self.app_used_storage += size_bytes
+        self.save(update_fields=['remaining_storage', 'app_used_storage'])

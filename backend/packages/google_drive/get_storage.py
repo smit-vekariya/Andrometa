@@ -103,8 +103,11 @@ class GoogleDriveStorage:
                 root_folder_id = account.root_folder_id
             app_used_storage = self._get_folder_size(root_folder_id) if root_folder_id else 0
 
+            # 3. Component breakdown (total API usage includes app files)
+            other_user_usage = max(user_used_storage - app_used_storage, 0)
+
             account.total_storage = total_storage
-            account.user_used_storage = user_used_storage
+            account.user_used_storage = other_user_usage
             account.app_used_storage = app_used_storage
             account.remaining_storage = remaining_storage
             account.root_folder_id = root_folder_id

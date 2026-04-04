@@ -126,11 +126,21 @@ class SmartUploadService:
         # storage.get_set_storage_info() # update storage manually in database no need to call api every time
         return file_obj
 
+    def update_storage(self, accounts):
+        for account in accounts:
+            try:
+                GoogleDriveStorage(str(account.id)).get_set_storage_info()
+                account.refresh_from_db()
+            except Exception as e:
+                logging.warning(f"Could not refresh storage for {account.email}: {e}")
+
     def upload_many(self, folder, files: list, device_id: str = None):
         try:
             accounts = list(self._get_accounts())
             if not accounts:
                 raise SmartUploadServiceError("No active Google Drive accounts found.")
+
+            self.update_storage(accounts)
 
             uploaded = []
             failed   = []
@@ -143,7 +153,7 @@ class SmartUploadService:
                 success    = False
 
                 for account in accounts:
-                    if not self._refresh_and_check_space(account, file_size):
+                    if account.remaining_storage < file_size:
                         logging.info(f"Account {account.email} full, trying next for {file_name}...")
                         continue
                     try:
@@ -152,8 +162,8 @@ class SmartUploadService:
                             file_name, mime_type, device_id
                         )
                         uploaded.append(file_obj)
-
                         success = True
+                        account.add_app_used_storage(file_size)
                         break
                     except GoogleDriveStorageError as e:
                         logging.warning(f"Failed {file_name} on {account.email}: {e.message}")
@@ -161,6 +171,8 @@ class SmartUploadService:
 
                 if not success:
                     failed.append({"file_name": file_name, "error": "All accounts full or unavailable."})
+
+            self.update_storage(accounts)
 
             # if uploaded:
             #     try:
