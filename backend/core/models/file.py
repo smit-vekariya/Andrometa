@@ -35,9 +35,8 @@ class File(BaseModel):
 
     class Meta:
         indexes = [
-            models.Index(fields=['content_type', 'object_id']),
-            models.Index(fields=['content_type', 'object_id', 'remote_file_id']),
             models.Index(fields=['user', 'folder']),
+            models.Index(fields=['user', 'file_name']),
             models.Index(fields=['local_media_id', 'device_id']),
         ]
         unique_together = [

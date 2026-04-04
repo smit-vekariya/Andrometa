@@ -3,7 +3,7 @@ from rest_framework.parsers import MultiPartParser, FormParser
 from rest_framework.decorators import action
 from manager.base_view import BaseModelViewSet
 from core.models import File, Folder
-from core.serializers import FileSerializer, FileUploadSerializer
+from core.serializers import FileSerializer, FileUploadSerializer, FileListSerializer, FolderSerializer
 from manager.manager import HttpsAppResponse
 from manager.manager import custom_response_errors
 from packages.google_drive.smart_upload import SmartUploadService, SmartUploadServiceError
@@ -57,3 +57,50 @@ class FileViewSet(BaseModelViewSet):
             return HttpsAppResponse.send([], 1, "File uploaded successfully.", status_code=status.HTTP_201_CREATED)
         except Exception as e:
             return HttpsAppResponse.exception(str(e))
+
+    @action(detail=False, methods=['get'], url_path='search')
+    def search(self, request):
+        try:
+            query = request.query_params.get('q', '')
+            if not query:
+                return HttpsAppResponse.send([], 1, "No search query provided.")
+
+            user = request.user
+
+            # Search Files
+            files = File.objects.filter(
+                user=user,
+                file_name__icontains=query,
+                is_deleted=False
+            ).order_by('-created_at')
+
+            # Search Folders
+            folders = Folder.objects.filter(
+                user=user,
+                name__icontains=query,
+                is_deleted=False
+            ).order_by('-created_at')
+
+            # Serialize
+            file_data = FileListSerializer(files, many=True).data
+            folder_data = FolderSerializer(folders, many=True).data
+
+            combined_results = []
+
+            for item in file_data:
+                item['type'] = 'file'
+                item['type_id'] = item.get('id')
+                combined_results.append(item)
+
+            for item in folder_data:
+                item['type'] = 'folder'
+                item['type_id'] = item.get('id')
+                item['file_name'] = item.get('name') # User requested file_name key for folders too
+                combined_results.append(item)
+
+            # Sort combined results by created_at
+            combined_results.sort(key=lambda x: x.get('created_at', ''), reverse=True)
+
+            return HttpsAppResponse.send(combined_results, 1, "Search results fetched successfully.")
+        except Exception as e:
+            return HttpsAppResponse.exception(str(e))

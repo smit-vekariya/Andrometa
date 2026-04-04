@@ -10,6 +10,9 @@ class Folder(BaseModel):
 
     class Meta:
         unique_together = ('user', 'parent', 'name')
+        indexes = [
+            models.Index(fields=['user', 'name']),
+        ]
 
 
     def __str__(self):
