@@ -1,0 +1,22 @@
+{
+  "app_label": "account",
+  "model": "appinfo",
+  "unique_fields": ["device"],
+  "fk": [],
+  "data": [
+    {
+      "device":"android",
+      "version": "1.0.0",
+      "url": "",
+      "total_download": "0",
+      "force_update": false
+    },
+    {
+      "device":"ios",
+      "version": "1.0.0",
+      "url": "",
+      "total_download": "0",
+      "force_update": false
+    }
+  ]
+}

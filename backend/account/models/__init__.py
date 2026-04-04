@@ -3,3 +3,4 @@ from .custom_user import CustomUser, AuthOTP, UserToken, upload_location
 from .main_menu import MainMenu
 from .plan import Plan
 from .subscription import UserSubscription
+from .app_info import AppInfo, AppReport

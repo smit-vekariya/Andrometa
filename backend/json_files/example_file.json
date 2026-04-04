@@ -1,0 +1,21 @@
+{
+  "app_label": "core",
+  "model": "allowedcontenttype",
+  "unique_fields": ["content_type"],
+  "fk": [
+    {
+      "field":"content_type",
+      "app_label": "contenttypes",
+      "model": "contenttype",
+      "lookup_fields": [
+        "model"
+      ]}],
+  "data": [
+    {
+      "content_type":{
+        "model": "email"
+      },
+      "description": "Allowed email"
+    }
+  ]
+}

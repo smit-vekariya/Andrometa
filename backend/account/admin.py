@@ -1,11 +1,11 @@
 from django.contrib import admin
-from account.models import MainMenu, CustomUser, State, City, UserToken, AuthOTP
+from account.models import MainMenu, CustomUser, State, City, UserToken, AuthOTP, AppInfo, AppReport
 
 # Register your models here.
 
 @admin.register(MainMenu)
 class MainMenuAdmin(admin.ModelAdmin):
-    list_display = ("name","code", "url", "sequence", "parent", "is_parent", "icon")
+    list_display = ("name", "code", "url", "sequence", "parent", "is_parent", "icon")
 
 
 @admin.register(CustomUser)
@@ -27,8 +27,17 @@ class CityAdmin(admin.ModelAdmin):
 class UserTokenAdmin(admin.ModelAdmin):
     list_display = ("user", "access_token", "is_allowed")
 
+
 @admin.register(AuthOTP)
 class AuthOTPAdmin(admin.ModelAdmin):
-    list_display =('key','value', 'otp', 'expire_on', 'created_on')
+    list_display = ('key', 'value', 'otp', 'expire_on', 'created_on')
 
 
+@admin.register(AppInfo)
+class AppInfoAdmin(admin.ModelAdmin):
+    list_display = ('device', 'version', 'url', 'total_download', 'force_update')
+
+
+@admin.register(AppReport)
+class AppReportAdmin(admin.ModelAdmin):
+    list_display = ('device_id', 'device_name', 'first_login_date', 'last_login_date')
