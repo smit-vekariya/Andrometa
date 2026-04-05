@@ -15,8 +15,8 @@ from manager.base_view import BaseModelViewSet
 from packages.google_drive.get_storage import GoogleDriveStorageError, GoogleDriveStorage
 from core.serializers import GoogleDriveAccountSerializer
 from django.db.models import Max
-
-
+from rest_framework.decorators import api_view, permission_classes
+from rest_framework.permissions import AllowAny
 
 
 def oauth_callback(request):
@@ -35,7 +35,7 @@ def google_auth_url(request):
             return HttpsAppResponse.send({}, 0, "User not authenticated", 401)
 
         account_count = GoogleDriveAccount.objects.filter(user=user, is_deleted=False, is_active=True).count()
-        if account_count >= settings.MAX_GOOGLE_DRIVE_ACCOUNT:
+        if account_count >= int(settings.MAX_GOOGLE_DRIVE_ACCOUNT):
             return HttpsAppResponse.send({}, 0, f"You can only link up to {settings.MAX_GOOGLE_DRIVE_ACCOUNT} Google Drive accounts.", 403)
 
         flow = Flow.from_client_config(
@@ -69,6 +69,7 @@ def google_auth_url(request):
 
 
 @api_view(["GET"])
+@permission_classes([AllowAny])
 def google_callback(request):
     try:
         state = request.GET.get("state")
