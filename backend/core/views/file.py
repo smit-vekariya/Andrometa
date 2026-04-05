@@ -32,7 +32,6 @@ class FileViewSet(BaseModelViewSet):
             data = serializer.validated_data
             raw_files = data['files']
             folder_id = data.get('folder_id')
-            device_id = data.get('device_id')
             folder = None
 
             if folder_id:
@@ -43,7 +42,7 @@ class FileViewSet(BaseModelViewSet):
 
             try:
                 service = SmartUploadService(user=request.user)
-                result  = service.upload_many(folder=folder, files=raw_files, device_id=device_id)
+                result  = service.upload_many(folder=folder, files=raw_files)
             except SmartUploadServiceError as e:
                 return HttpsAppResponse.send([], 0, str(e.as_dict()))
 
@@ -103,4 +102,4 @@ class FileViewSet(BaseModelViewSet):
 
             return HttpsAppResponse.send(combined_results, 1, "Search results fetched successfully.")
         except Exception as e:
-            return HttpsAppResponse.exception(str(e))
+            return HttpsAppResponse.exception(str(e))

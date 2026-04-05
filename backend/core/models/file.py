@@ -30,18 +30,15 @@ class File(BaseModel):
 
     # Origin tracking
     local_media_id = models.CharField(max_length=255, null=True, blank=True, help_text="ID from phone gallery")
-    device_id = models.CharField(max_length=255, null=True, blank=True, help_text="Originating device ID")
 
 
     class Meta:
         indexes = [
             models.Index(fields=['user', 'folder']),
             models.Index(fields=['user', 'file_name']),
-            models.Index(fields=['local_media_id', 'device_id']),
         ]
         unique_together = [
             ['content_type', 'object_id', 'remote_file_id'],         # one remote file = one record
-            ['content_type', 'object_id', 'local_media_id', 'device_id'],  # no duplicate uploads from same device
         ]
 
     def __str__(self):

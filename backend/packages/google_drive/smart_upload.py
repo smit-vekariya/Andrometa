@@ -88,7 +88,7 @@ class SmartUploadService:
 
             account.save(update_fields=["root_folder_id"])
 
-    def _upload_single(self, account, folder, file_bytes, file_name, mime_type, device_id) -> File:
+    def _upload_single(self, account, folder, file_bytes, file_name, mime_type) -> File:
         service = get_drive_client(str(account.id))
 
         # Ensure folder exists and is not trashed. Using a set to avoid doing this on every loop iteration.
@@ -121,7 +121,6 @@ class SmartUploadService:
             remote_file_path=f"/{settings.ROOT_FOLDER_NAME}/{file_name}",
             remote_view_url=uploaded.get("webViewLink"),
             remote_download_url=uploaded.get("webContentLink"),
-            device_id=device_id,
         )
         # storage.get_set_storage_info() # update storage manually in database no need to call api every time
         return file_obj
@@ -134,7 +133,7 @@ class SmartUploadService:
             except Exception as e:
                 logging.warning(f"Could not refresh storage for {account.email}: {e}")
 
-    def upload_many(self, folder, files: list, device_id: str = None):
+    def upload_many(self, folder, files: list):
         try:
             accounts = list(self._get_accounts())
             if not accounts:
@@ -159,7 +158,7 @@ class SmartUploadService:
                     try:
                         file_obj = self._upload_single(
                             account, folder, file_bytes,
-                            file_name, mime_type, device_id
+                            file_name, mime_type
                         )
                         uploaded.append(file_obj)
                         success = True

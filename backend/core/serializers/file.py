@@ -7,7 +7,6 @@ from core.models import File
 class FileUploadSerializer(serializers.Serializer):
     folder_id = serializers.UUIDField(required=False, allow_null=True)
     files = serializers.ListField(child=serializers.FileField(), allow_empty=False)
-    device_id = serializers.CharField(required=False, allow_blank=True)
 
 
 class FileSerializer(BaseModelSerializer):
@@ -32,7 +31,7 @@ class FileSerializer(BaseModelSerializer):
             'storage_content_type', 'storage_object_id', 'storage_account_repr',
             'file_name', 'file_type', 'mime_type', 'size_bytes',
             'remote_file_id', 'remote_file_path', 'remote_view_url',
-            'local_media_id', 'device_id',
+            'local_media_id', 'remote_download_url'
             'is_active', 'is_deleted', 'created_at', 'updated_at',
             'created_by', 'updated_by',
         ]
