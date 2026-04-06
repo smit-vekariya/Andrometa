@@ -1,0 +1,161 @@
+{% load static %}
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+    <title>{% block title %}GoPlus Drive{% endblock %}</title>
+
+    <link
+      href="https://fonts.googleapis.com/css2?family=Google+Sans:wght@400;500;700&family=Google+Sans+Display:wght@400;700&family=Roboto:wght@300;400;500&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&family=DM+Serif+Display&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="{% static 'web/css/style.css' %}" />
+    <link rel="icon" href="{% static 'images/logo.png' %}" type="image/png" width="70" height="70" />
+    {% block extra_css %}{% endblock %}
+  </head>
+  <body>
+    {% block nav %}
+<nav>
+      <div class="nav-left">
+        <button
+          class="nav-ham"
+          onclick="document.getElementById('navL').classList.toggle('open')"
+        >
+          <div class="ham-lines"><span></span><span></span><span></span></div>
+        </button>
+        <a class="nav-logo" href="{% url 'home' %}">
+          <img
+            src="{% static 'images/logo.png' %}"
+            alt="logo"
+            width="70"
+            width="70"
+          />
+          <span class="logo-name"><span>GoPlus</span> Drive</span>
+        </a>
+      </div>
+      <div class="nav-links" id="navL">
+        <a
+          class="nl {% if request.path == '/' %}active{% endif %}"
+          href="{% url 'home' %}"
+          >Home</a
+        >
+        <a
+          class="nl {% if request.path == '/privacy/' %}active{% endif %}"
+          href="{% url 'privacy' %}"
+          >Privacy</a
+        >
+        <a
+          class="nl {% if request.path == '/terms/' %}active{% endif %}"
+          href="{% url 'terms' %}"
+          >Terms</a
+        >
+        <a
+          class="nl {% if request.path == '/contact/' %}active{% endif %}"
+          href="{% url 'contact' %}"
+          >Contact</a
+        >
+      </div>
+      <div class="nav-right">
+        <a
+          class="nav-cta"
+          href="https://play.google.com/store/apps/details?id=com.plusdrive.app"
+          target="_blank"
+        >
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none">
+            <path
+              d="M3.18 23.76A2 2 0 0 1 2 22V2a2 2 0 0 1 1.18-1.76L14.1 12 3.18 23.76Z"
+              fill="#34A853"
+            />
+            <path d="M14.1 12 3.18.24l13.3 7.68L14.1 12Z" fill="#FBBC04" />
+            <path d="M14.1 12l2.38 4.08-13.3 7.68L14.1 12Z" fill="#EA4335" />
+            <path
+              d="M22 12a2 2 0 0 1-1.12 1.8l-4.4 2.28L14.1 12l2.38-4.08 4.4 2.28A2 2 0 0 1 22 12Z"
+              fill="#4285F4"
+            />
+          </svg>
+          Get App
+        </a>
+      </div>
+    </nav>
+    {% endblock %}
+
+    {% block content %}{% endblock %}
+
+    {% block footer %}
+<footer>
+      <div class="ft-grid">
+        <div class="ft-brand">
+          <a class="nav-logo" href="{% url 'home' %}" style="padding: 0">
+            <img
+              src="{% static 'images/logo.png' %}"
+              alt="logo"
+              width="70"
+              width="70"
+            />
+            <span class="logo-name" style="font-size: 1rem"
+              ><span>GoPlus</span> Drive</span
+            >
+          </a>
+          <p>One app. All your Google Drive accounts. Zero switching.</p>
+          <div style="margin-top: 14px">
+            <a
+              href="https://play.google.com/store/apps/details?id=com.plusdrive.app"
+              target="_blank"
+              class="play-badge"
+            >
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none">
+                <path
+                  d="M3.18 23.76A2 2 0 0 1 2 22V2a2 2 0 0 1 1.18-1.76L14.1 12 3.18 23.76Z"
+                  fill="#34A853"
+                />
+                <path d="M14.1 12 3.18.24l13.3 7.68L14.1 12Z" fill="#FBBC04" />
+                <path
+                  d="M14.1 12l2.38 4.08-13.3 7.68L14.1 12Z"
+                  fill="#EA4335"
+                />
+                <path
+                  d="M22 12a2 2 0 0 1-1.12 1.8l-4.4 2.28L14.1 12l2.38-4.08 4.4 2.28A2 2 0 0 1 22 12Z"
+                  fill="#4285F4"
+                />
+              </svg>
+              <div class="pb-txt">
+                <small>Get it on</small><b>Google Play</b>
+              </div>
+            </a>
+          </div>
+        </div>
+        <div class="ft-col">
+          <h5>Product</h5>
+          <a href="{% url 'home' %}">Home</a>
+          <a
+            href="https://play.google.com/store/apps/details?id=com.plusdrive.app"
+            target="_blank"
+            >Download</a
+          >
+        </div>
+        <div class="ft-col">
+          <h5>Legal</h5>
+          <a href="{% url 'privacy' %}">Privacy Policy</a>
+          <a href="{% url 'terms' %}">Terms &amp; Conditions</a>
+        </div>
+        <div class="ft-col">
+          <h5>Support</h5>
+          <a href="{% url 'contact' %}">Contact Us</a>
+          <a href="mailto:support@goplusdrive.app">support@goplusdrive.app</a>
+        </div>
+      </div>
+      <div class="ft-bot">
+        <p>© 2025 GoPlus Drive. All rights reserved.</p>
+        <span class="ft-tagline">Your File, Your Storage</span>
+      </div>
+    </footer>
+    {% endblock %}
+
+    {% block extra_js %}{% endblock %}
+  </body>
+</html>

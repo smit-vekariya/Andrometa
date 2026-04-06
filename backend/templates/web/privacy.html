@@ -1,0 +1,158 @@
+{% extends 'web/base.html' %}
+
+{% block title %}Privacy Policy – GoPlus Drive{% endblock %}
+
+{% block content %}
+<div class="pg-head">
+      <div class="breadcrumb">
+        <a href="{% url 'home' %}">Home</a> › Privacy Policy
+      </div>
+      <h1>Privacy Policy</h1>
+      <p>
+        We respect your privacy. Here's exactly what we collect, why, and what
+        we never touch.
+      </p>
+    </div>
+    <div class="pg-body">
+      <div class="p-date"> Last updated: 1 January 2025</div>
+      <div class="pb">
+        <h2>1. Introduction</h2>
+        <p>
+          Welcome to GoPlus Drive ("we", "our", "us"). This Privacy Policy
+          explains how we collect, use, disclose and safeguard your information
+          when you use the GoPlus Drive mobile application ("App"). Please read
+          this policy carefully.
+        </p>
+      </div>
+      <div class="pb">
+        <h2>2. Information We Collect</h2>
+        <h3>2.1 Information You Provide</h3>
+        <ul>
+          <li>Google account email addresses you connect to the App.</li>
+          <li>
+            Contact messages submitted via our contact form (name, email,
+            message).
+          </li>
+        </ul>
+        <h3>2.2 Automatically Collected</h3>
+        <ul>
+          <li>
+            Anonymised app usage analytics (features used, crash reports).
+          </li>
+          <li>Device information: OS version, device model, app version.</li>
+        </ul>
+        <h3>2.3 What We Do Not Collect</h3>
+        <ul>
+          <li>
+            Your Google account password — authentication is handled solely by
+            Google OAuth 2.0.
+          </li>
+          <li>The content of files stored in your Google Drive.</li>
+          <li>Your precise GPS location.</li>
+        </ul>
+      </div>
+      <div class="pb">
+        <h2>3. How We Use Your Information</h2>
+        <ul>
+          <li>To provide and maintain the GoPlus Drive service.</li>
+          <li>To display and manage files across connected Google accounts.</li>
+          <li>To improve performance and fix bugs via crash analytics.</li>
+          <li>To respond to support and contact enquiries.</li>
+        </ul>
+      </div>
+      <div class="pb">
+        <h2>4. Google API &amp; OAuth</h2>
+        <p>
+          GoPlus Drive uses the Google Drive API and Google OAuth 2.0. We
+          request only the minimum permissions necessary and comply with the
+          <a
+            href="https://developers.google.com/terms/api-services-user-data-policy"
+            class="tl"
+            target="_blank"
+            >Google API Services User Data Policy</a
+          >. Your Google credentials are never stored on our servers.
+        </p>
+      </div>
+      <div class="pb">
+        <h2>5. Data Sharing &amp; Disclosure</h2>
+        <p>
+          We do not sell, trade or rent your personal information. We may share
+          data only with trusted service providers helping us operate the App,
+          or if required by law.
+        </p>
+      </div>
+      <div class="pb">
+        <h2>6. Data Retention</h2>
+        <p>
+          We retain data only as long as necessary to provide the service.
+          Removing accounts from the App results in data purge within 30 days.
+        </p>
+      </div>
+      <div class="pb">
+        <h2>7. Security</h2>
+        <p>
+          We use industry-standard security measures including TLS encryption in
+          transit and secure token storage.
+        </p>
+      </div>
+      <div class="pb">
+        <h2>8. Children's Privacy</h2>
+        <p>
+          GoPlus Drive is not directed at children under 13. We do not knowingly
+          collect data from children. If we discover we have, we will delete it
+          immediately.
+        </p>
+      </div>
+      <div class="pb">
+        <h2>9. Your Rights</h2>
+        <ul>
+          <li>Access, correct or delete personal data we hold.</li>
+          <li>
+            Revoke Google OAuth access via your Google Account settings at any
+            time.
+          </li>
+        </ul>
+        <p>
+          Contact
+          <a href="mailto:privacy@goplusdrive.app" class="tl"
+            >privacy@goplusdrive.app</a
+          >
+          to exercise these rights.
+        </p>
+      </div>
+      <div class="pb">
+        <h2>10. Changes to This Policy</h2>
+        <p>
+          We may update this Privacy Policy periodically. Significant changes
+          will be notified via the App or email. Continued use constitutes
+          acceptance.
+        </p>
+      </div>
+      <div class="pb">
+        <h2>11. Contact</h2>
+        <p>
+          Questions? Email
+          <a href="mailto:privacy@goplusdrive.app" class="tl"
+            >privacy@goplusdrive.app</a
+          >
+          or visit our <a href="{% url 'contact' %}" class="tl">Contact page</a>.
+        </p>
+      </div>
+    </div>
+    <div class="pg-foot">
+      <div class="pg-foot-in">
+        <p>© 2025 GoPlus Drive</p>
+        <a href="{% url 'home' %}" class="tl">← Back to Home</a>
+      </div>
+    </div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+      document.addEventListener("DOMContentLoaded", () => {
+        const r = document.getElementById("ringFill");
+        if (r)
+          setTimeout(() => (r.style.strokeDashoffset = 135 - 135 * 0.18), 300);
+      });
+    </script>
+{% endblock %}

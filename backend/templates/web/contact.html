@@ -1,0 +1,255 @@
+{% extends 'web/base.html' %}
+
+{% block title %}Contact Us – GoPlus Drive{% endblock %}
+
+{% block content %}
+<div class="pg-head">
+      <div class="breadcrumb"><a href="{% url 'home' %}">Home</a> › Contact</div>
+      <h1>Contact Us</h1>
+      <p>
+        Have a question, bug report or feedback? We'd love to hear from you.
+      </p>
+    </div>
+    <div class="ct-wrap">
+      <div class="ct-info">
+        <h2>Get in touch</h2>
+        <div class="ct-item">
+          <div class="ct-ico" style="background: #e8f0fe">
+            <svg width="17" height="17" viewBox="0 0 24 24" fill="none">
+              <path
+                d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"
+                stroke="#1a73e8"
+                stroke-width="1.8"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              />
+            </svg>
+          </div>
+          <div class="ct-txt">
+            <h4>General Support</h4>
+            <p>
+              <a href="mailto:support@goplusdrive.app" class="tl"
+                >support@goplusdrive.app</a
+              >
+            </p>
+          </div>
+        </div>
+        <div class="ct-item">
+          <div class="ct-ico" style="background: #e6f4ea">
+            <svg width="17" height="17" viewBox="0 0 24 24" fill="none">
+              <path
+                d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"
+                stroke="#0f9d58"
+                stroke-width="1.8"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              />
+            </svg>
+          </div>
+          <div class="ct-txt">
+            <h4>Privacy Queries</h4>
+            <p>
+              <a href="mailto:privacy@goplusdrive.app" class="tl"
+                >privacy@goplusdrive.app</a
+              >
+            </p>
+          </div>
+        </div>
+        <div class="ct-item">
+          <div class="ct-ico" style="background: #f3e5f5">
+            <svg width="17" height="17" viewBox="0 0 24 24" fill="none">
+              <path
+                d="M12 22V12M12 12L3 7l9-5 9 5-9 5z"
+                stroke="#673ab7"
+                stroke-width="1.8"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              />
+              <path
+                d="M3 7v10l9 5 9-5V7"
+                stroke="#673ab7"
+                stroke-width="1.8"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              />
+            </svg>
+          </div>
+          <div class="ct-txt">
+            <h4>Legal</h4>
+            <p>
+              <a href="mailto:legal@goplusdrive.app" class="tl"
+                >legal@goplusdrive.app</a
+              >
+            </p>
+          </div>
+        </div>
+        <div class="ct-item">
+          <div class="ct-ico" style="background: #e8f0fe">
+            <svg width="17" height="17" viewBox="0 0 24 24" fill="none">
+              <path
+                d="M21 10c0 7-9 13-9 13S3 17 3 10a9 9 0 0 1 18 0z"
+                stroke="#1a73e8"
+                stroke-width="1.8"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              />
+              <circle
+                cx="12"
+                cy="10"
+                r="3"
+                stroke="#1a73e8"
+                stroke-width="1.8"
+              />
+            </svg>
+          </div>
+          <div class="ct-txt">
+            <h4>Based in</h4>
+            <p>Gujarat, India</p>
+          </div>
+        </div>
+        <div style="margin-top: 20px">
+          <p
+            style="
+              font-size: 0.7rem;
+              color: var(--text3);
+              margin-bottom: 8px;
+              font-weight: 600;
+              text-transform: uppercase;
+              letter-spacing: 0.06em;
+            "
+          >
+            Get the App
+          </p>
+          <a
+            href="https://play.google.com/store/apps/details?id=com.plusdrive.app"
+            target="_blank"
+            class="play-badge"
+          >
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none">
+              <path
+                d="M3.18 23.76A2 2 0 0 1 2 22V2a2 2 0 0 1 1.18-1.76L14.1 12 3.18 23.76Z"
+                fill="#34A853"
+              />
+              <path d="M14.1 12 3.18.24l13.3 7.68L14.1 12Z" fill="#FBBC04" />
+              <path d="M14.1 12l2.38 4.08-13.3 7.68L14.1 12Z" fill="#EA4335" />
+              <path
+                d="M22 12a2 2 0 0 1-1.12 1.8l-4.4 2.28L14.1 12l2.38-4.08 4.4 2.28A2 2 0 0 1 22 12Z"
+                fill="#4285F4"
+              />
+            </svg>
+            <div class="pb-txt"><small>Get it on</small><b>Google Play</b></div>
+          </a>
+        </div>
+      </div>
+      <div class="ct-card">
+        <h3>Send us a message</h3>
+        <div id="cForm">
+          <div class="f2">
+            <div class="fg">
+              <label>First Name</label><input type="text" placeholder="John" />
+            </div>
+            <div class="fg">
+              <label>Last Name</label><input type="text" placeholder="Doe" />
+            </div>
+          </div>
+          <div class="fg">
+            <label>Email Address</label
+            ><input type="email" id="cEmail" placeholder="john@example.com" />
+          </div>
+          <div class="fg">
+            <label>Subject</label>
+            <select>
+              <option value="">Select a topic…</option>
+              <option>Technical Support</option>
+              <option>Privacy / Data Request</option>
+              <option>Feature Request</option>
+              <option>Bug Report</option>
+              <option>Business / Partnership</option>
+              <option>Other</option>
+            </select>
+          </div>
+          <div class="fg">
+            <label>Message</label
+            ><textarea
+              id="cMsg"
+              rows="5"
+              placeholder="Describe your question or issue in detail…"
+            ></textarea>
+          </div>
+          <button
+            class="btn btn-primary"
+            style="
+              width: 100%;
+              justify-content: center;
+              border-radius: 4px;
+              padding: 11px;
+            "
+            onclick="submitForm()"
+          >
+            Send Message
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none">
+              <line
+                x1="22"
+                y1="2"
+                x2="11"
+                y2="13"
+                stroke="white"
+                stroke-width="2"
+                stroke-linecap="round"
+              />
+              <polygon
+                points="22 2 15 22 11 13 2 9 22 2"
+                stroke="white"
+                stroke-width="2"
+                fill="none"
+                stroke-linejoin="round"
+              />
+            </svg>
+          </button>
+        </div>
+        <div class="ct-ok" id="cOk">
+          <div class="ok-ico">
+            <svg width="52" height="52" viewBox="0 0 52 52" fill="none">
+              <circle cx="26" cy="26" r="26" fill="#e6f4ea" />
+              <path
+                d="M16 26l7 7 13-13"
+                stroke="#0f9d58"
+                stroke-width="2.5"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              />
+            </svg>
+          </div>
+          <h4>Message Sent!</h4>
+          <p>Thanks for reaching out. We'll reply within 24–48 hours.</p>
+        </div>
+      </div>
+    </div>
+    <div class="pg-foot">
+      <div class="pg-foot-in">
+        <p>© 2025 GoPlus Drive</p>
+        <a href="{% url 'home' %}" class="tl">← Back to Home</a>
+      </div>
+    </div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+      document.addEventListener("DOMContentLoaded", () => {
+        const r = document.getElementById("ringFill");
+        if (r)
+          setTimeout(() => (r.style.strokeDashoffset = 135 - 135 * 0.18), 300);
+      });
+
+      function submitForm() {
+        const e = document.getElementById("cEmail"),
+          m = document.getElementById("cMsg");
+        if (!e.value || !m.value) {
+          alert("Please fill in your email and message.");
+          return;
+        }
+        document.getElementById("cForm").style.display = "none";
+        document.getElementById("cOk").style.display = "block";
+      }
+    </script>
+{% endblock %}

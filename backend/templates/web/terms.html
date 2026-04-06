@@ -1,0 +1,143 @@
+{% extends 'web/base.html' %}
+
+{% block title %}Terms & Conditions – GoPlus Drive{% endblock %}
+
+{% block content %}
+<div class="pg-head">
+      <div class="breadcrumb">
+        <a href="{% url 'home' %}">Home</a> › Terms &amp; Conditions
+      </div>
+      <h1>Terms &amp; Conditions</h1>
+      <p>
+        By using GoPlus Drive, you agree to these terms. Please read them
+        carefully before continuing.
+      </p>
+    </div>
+    <div class="pg-body">
+      <div class="p-date"> Last updated: 1 January 2025</div>
+      <div class="pb">
+        <h2>1. Acceptance of Terms</h2>
+        <p>
+          By downloading, installing or using the GoPlus Drive application
+          ("App"), you agree to be bound by these Terms and Conditions. If you
+          do not agree, please do not use the App.
+        </p>
+      </div>
+      <div class="pb">
+        <h2>2. Description of Service</h2>
+        <p>
+          GoPlus Drive is a mobile application that connects multiple Google
+          accounts and manages their Google Drive storage through a unified
+          interface. The App does not provide storage itself — it facilitates
+          access to storage offered by Google Drive.
+        </p>
+      </div>
+      <div class="pb">
+        <h2>3. Eligibility</h2>
+        <ul>
+          <li>You must be at least 13 years of age to use the App.</li>
+          <li>You must hold a valid Google account to use core features.</li>
+          <li>
+            You are responsible for compliance with applicable laws in your
+            jurisdiction.
+          </li>
+        </ul>
+      </div>
+      <div class="pb">
+        <h2>4. User Accounts &amp; Google Integration</h2>
+        <p>
+          You are responsible for the security of connected Google accounts.
+          GoPlus Drive uses Google's official OAuth 2.0 and complies with
+          Google's API Terms of Service.
+        </p>
+      </div>
+      <div class="pb">
+        <h2>5. Permitted Use</h2>
+        <p>
+          You must not use GoPlus Drive to: store or distribute illegal content;
+          reverse engineer or decompile the App; use bots or automated scripts;
+          circumvent security features; or violate Google's Terms of Service.
+        </p>
+      </div>
+      <div class="pb">
+        <h2>6. Intellectual Property</h2>
+        <p>
+          The GoPlus Drive application, logo, design, code and content are
+          protected by intellectual property law. You are granted a limited,
+          non-exclusive licence to use the App on your personal device.
+        </p>
+      </div>
+      <div class="pb">
+        <h2>7. Disclaimer of Warranties</h2>
+        <p>
+          The App is provided "as is" without warranties of any kind. We do not
+          warrant uninterrupted service, freedom from data loss, or ongoing
+          availability of third-party services.
+        </p>
+      </div>
+      <div class="pb">
+        <h2>8. Limitation of Liability</h2>
+        <p>
+          To the maximum extent permitted by law, GoPlus Drive and its
+          developers shall not be liable for indirect, incidental or
+          consequential damages arising from use of the App.
+        </p>
+      </div>
+      <div class="pb">
+        <h2>9. Third-Party Services</h2>
+        <p>
+          The App integrates with Google Drive, which is subject to its own
+          terms and privacy policies. GoPlus Drive is not responsible for the
+          availability or policies of these services.
+        </p>
+      </div>
+      <div class="pb">
+        <h2>10. Termination</h2>
+        <p>
+          We reserve the right to suspend or terminate access at any time if you
+          violate these Terms. You may stop using the App at any time by
+          uninstalling it.
+        </p>
+      </div>
+      <div class="pb">
+        <h2>11. Changes to Terms</h2>
+        <p>
+          We may update these Terms periodically. Updates will be posted with a
+          revised date. Continued use of the App constitutes acceptance.
+        </p>
+      </div>
+      <div class="pb">
+        <h2>12. Governing Law</h2>
+        <p>
+          These Terms are governed by the laws of India. Any disputes shall be
+          subject to the exclusive jurisdiction of courts in Gujarat, India.
+        </p>
+      </div>
+      <div class="pb">
+        <h2>13. Contact</h2>
+        <p>
+          Questions? Email
+          <a href="mailto:legal@goplusdrive.app" class="tl"
+            >legal@goplusdrive.app</a
+          >
+          or visit our <a href="{% url 'contact' %}" class="tl">Contact page</a>.
+        </p>
+      </div>
+    </div>
+    <div class="pg-foot">
+      <div class="pg-foot-in">
+        <p>© 2025 GoPlus Drive</p>
+        <a href="{% url 'home' %}" class="tl">← Back to Home</a>
+      </div>
+    </div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+      document.addEventListener("DOMContentLoaded", () => {
+        const r = document.getElementById("ringFill");
+        if (r)
+          setTimeout(() => (r.style.strokeDashoffset = 135 - 135 * 0.18), 300);
+      });
+    </script>
+{% endblock %}

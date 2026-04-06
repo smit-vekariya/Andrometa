@@ -1,0 +1,275 @@
+{% extends 'web/base.html' %}
+
+{% block title %}GoPlus Drive – Your File, Your Storage{% endblock %}
+
+{% block content %}
+<!-- HERO -->
+    <div class="hero">
+      <div>
+        <div class="hero-eyebrow">
+          <svg width="6" height="6">
+            <circle cx="3" cy="3" r="3" fill="#1a73e8" />
+          </svg>
+          Multi-Account Cloud Storage
+        </div>
+        <h1>All your Drive storage,<br />in one <em>unified</em> place</h1>
+        <p class="sub">
+          Connect multiple Google accounts and manage all their Drive storage
+          from one clean interface — no more switching tabs or logging in and
+          out.
+        </p>
+        <div class="hero-btns">
+          <a
+            href="https://play.google.com/store/apps/details?id=com.plusdrive.app"
+            target="_blank"
+            class="btn btn-primary"
+          >
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none">
+              <path
+                d="M3.18 23.76A2 2 0 0 1 2 22V2a2 2 0 0 1 1.18-1.76L14.1 12 3.18 23.76Z"
+                fill="#34A853"
+              />
+              <path d="M14.1 12 3.18.24l13.3 7.68L14.1 12Z" fill="#FBBC04" />
+              <path d="M14.1 12l2.38 4.08-13.3 7.68L14.1 12Z" fill="#EA4335" />
+              <path
+                d="M22 12a2 2 0 0 1-1.12 1.8l-4.4 2.28L14.1 12l2.38-4.08 4.4 2.28A2 2 0 0 1 22 12Z"
+                fill="#4285F4"
+              />
+            </svg>
+            Download on Google Play
+          </a>
+          <a href="#features" class="btn btn-outline">See features</a>
+        </div>
+      </div>
+      <div>
+        <div class="dash-card">
+          <div class="dc-header">
+            <span class="dc-title">MY STORAGE</span>
+            <span class="dc-chip">3 accounts</span>
+          </div>
+          <div class="dc-body">
+            <div class="acc-row">
+              <div class="acc-av" style="background: #1a73e8">JD</div>
+              <div class="acc-info">
+                <div class="acc-email">john.doe@gmail.com</div>
+                <div class="acc-bar">
+                  <div
+                    class="acc-bar-fill"
+                    style="width: 38%; background: #1a73e8"
+                  ></div>
+                </div>
+              </div>
+              <div class="acc-size">5.7 / 15 GB</div>
+            </div>
+            <div class="acc-row">
+              <div class="acc-av" style="background: #0f9d58">JW</div>
+              <div class="acc-info">
+                <div class="acc-email">jane.work@gmail.com</div>
+                <div class="acc-bar">
+                  <div
+                    class="acc-bar-fill"
+                    style="width: 12%; background: #0f9d58"
+                  ></div>
+                </div>
+              </div>
+              <div class="acc-size">1.8 / 15 GB</div>
+            </div>
+            <div class="acc-row">
+              <div class="acc-av" style="background: #673ab7">BK</div>
+              <div class="acc-info">
+                <div class="acc-email">backup.keeper@gmail.com</div>
+                <div class="acc-bar">
+                  <div
+                    class="acc-bar-fill"
+                    style="width: 5%; background: #673ab7"
+                  ></div>
+                </div>
+              </div>
+              <div class="acc-size">0.7 / 15 GB</div>
+            </div>
+          </div>
+          <div class="dc-footer">
+            <div>
+              <div class="df-label">Total storage</div>
+              <div class="df-val">45 GB <small>/ 45 GB</small></div>
+              <div class="df-sub">8.2 GB used · 36.8 GB free</div>
+            </div>
+            <div class="ring-wrap">
+              <svg width="52" height="52" viewBox="0 0 52 52">
+                <circle class="r-bg" cx="26" cy="26" r="21.5" />
+                <circle class="r-fill" cx="26" cy="26" r="21.5" id="ringFill" />
+              </svg>
+              <div class="ring-pct">18%</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- FEATURES -->
+    <div class="section full" id="features">
+      <div class="inner" style="padding: 64px 48px">
+        <div style="text-align: center; margin-bottom: 36px">
+          <div class="sec-label">Features</div>
+          <h2>Built for people with multiple Google accounts</h2>
+          <p class="desc" style="margin: 8px auto 0">
+            GoPlus Drive gives you one unified view across all your Google Drive
+            storage — simple, fast, and secure.
+          </p>
+        </div>
+        <div class="feat-grid">
+          <div class="feat-card">
+            <div class="fi" style="background: #e8f0fe"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><polyline points="16 16 12 12 8 16" stroke="#1a73e8" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><line x1="12" y1="12" x2="12" y2="21" stroke="#1a73e8" stroke-width="1.8" stroke-linecap="round"/><path d="M20.39 18.39A5 5 0 0 0 18 9h-1.26A8 8 0 1 0 3 16.3" stroke="#1a73e8" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+            <h3>Smart Storage Switching</h3>
+            <p>Automatically changes storage and routes files to the account with the most available space, acting as a combined database.</p>
+          </div>
+          <div class="feat-card">
+            <div class="fi" style="background: #fce8e6"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><circle cx="11" cy="11" r="8" stroke="#d93025" stroke-width="1.8"/><path d="m21 21-4.35-4.35" stroke="#d93025" stroke-width="1.8" stroke-linecap="round"/></svg></div>
+            <h3>Multi-Drive Search</h3>
+            <p>Search across all your connected drives at once. Find any file instantly regardless of which account securely holds it.</p>
+          </div>
+          <div class="feat-card">
+            <div class="fi" style="background: #e6f4ea"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z" stroke="#0f9d58" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+            <h3>Google Drive Integration</h3>
+            <p>Seamlessly integrate your existing Google Drive accounts via secure OAuth. Unified view of all uploaded Google files.</p>
+          </div>
+          <div class="feat-card">
+            <div class="fi" style="background: #e8f0fe"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" stroke="#1a73e8" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><circle cx="9" cy="7" r="4" stroke="#1a73e8" stroke-width="1.8"/><path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75" stroke="#1a73e8" stroke-width="1.8" stroke-linecap="round"/></svg></div>
+            <h3>OneDrive Integration</h3>
+            <p>Connect your Microsoft OneDrive accounts alongside Google Drive, combining cloud ecosystems into one powerful app.</p>
+          </div>
+          <div class="feat-card">
+            <div class="fi" style="background: #e6f4ea"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" stroke="#0f9d58" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+            <h3>End-to-End Encryption</h3>
+            <p>Your privacy is prioritized. Sensitive data is protected with secure encryption, ensuring no unauthorized access or leaks.</p>
+          </div>
+          <div class="feat-card">
+            <div class="fi" style="background: #f3e5f5"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" stroke="#673ab7" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><polyline points="7 10 12 15 17 10" stroke="#673ab7" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><line x1="12" y1="15" x2="12" y2="3" stroke="#673ab7" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+            <h3>Fast File Downloads</h3>
+            <p>Download your files instantly to your local device directly from any connected cloud drive with maximum efficiency.</p>
+          </div>
+          <div class="feat-card">
+            <div class="fi" style="background: #fef7e0"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M23 4v6h-6" stroke="#f9ab00" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10" stroke="#f9ab00" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+            <h3>Auto Sync & Backup</h3>
+            <p>Never worry about losing your data. Enjoy automatic background syncing to securely backup photos, videos, and documents.</p>
+          </div>
+          <div class="feat-card">
+            <div class="fi" style="background: #e8f0fe"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M5 12h14" stroke="#1a73e8" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><polyline points="12 5 19 12 12 19" stroke="#1a73e8" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+            <h3>Move to Cloud</h3>
+            <p>Instantly backup files right from your native file manager. Use the 'Move to Cloud' direct share option for quick uploads.</p>
+          </div>
+          <div class="feat-card">
+            <div class="fi" style="background: #e6f4ea"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><circle cx="18" cy="5" r="3" stroke="#0f9d58" stroke-width="1.8"/><circle cx="6" cy="12" r="3" stroke="#0f9d58" stroke-width="1.8"/><circle cx="18" cy="19" r="3" stroke="#0f9d58" stroke-width="1.8"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49" stroke="#0f9d58" stroke-width="1.8"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49" stroke="#0f9d58" stroke-width="1.8"/></svg></div>
+            <h3>Secure File Sharing</h3>
+            <p>Easily share your files or folders globally. Generate precise links tailored with custom access permissions to external users.</p>
+          </div>
+          <div class="feat-card">
+            <div class="fi" style="background: #fce8e6"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><rect x="9" y="9" width="13" height="13" rx="2" ry="2" stroke="#d93025" stroke-width="1.8"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" stroke="#d93025" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+            <h3>Duplicate File Finder</h3>
+            <p>Automatically scan to detect duplicate files that are filling up your connected drives and safely remove the redundant copies.</p>
+          </div>
+          <div class="feat-card">
+            <div class="fi" style="background: #f3e5f5"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" stroke="#673ab7" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><circle cx="12" cy="12" r="3" stroke="#673ab7" stroke-width="1.8"/><line x1="1" y1="1" x2="23" y2="23" stroke="#673ab7" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+            <h3>Secure Sensitive Vault</h3>
+            <p>Maintain your absolute privacy. Use the built-in vault feature to hide and lock specific sensitive files from being viewed publicly.</p>
+          </div>
+          <div class="feat-card">
+            <div class="fi" style="background: #e8f0fe"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9" stroke="#1a73e8" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><path d="M13.73 21a2 2 0 0 1-3.46 0" stroke="#1a73e8" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+            <h3>Smart Notifications</h3>
+            <p>Stay thoroughly updated on upload completions, storage limits getting near, and shared file activity right strictly on your phone.</p>
+          </div>
+          <div class="feat-card">
+            <div class="fi" style="background: #fef7e0"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M16 3h5v5" stroke="#f9ab00" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><path d="M8 21H3v-5" stroke="#f9ab00" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><path d="M21 3l-8 8" stroke="#f9ab00" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><path d="M3 21l8-8" stroke="#f9ab00" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+            <h3>Auto Format Converter</h3>
+            <p>Convert your files on the go efficiently! Supports transforming PDF to Word or Word to PDF without requiring external tools.</p>
+          </div>
+          <div class="feat-card">
+            <div class="fi" style="background: #e6f4ea"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><polyline points="3 6 5 6 21 6" stroke="#0f9d58" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2" stroke="#0f9d58" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+            <h3>Unified Trash Bin</h3>
+            <p>Move unwanted files dynamically to the bin safely. Don't worry about accidental deletes, as trash lets you quickly recover them.</p>
+          </div>
+          <div class="feat-card">
+            <div class="fi" style="background: #fce8e6"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z" stroke="#d93025" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><polyline points="3.27 6.96 12 12.01 20.73 6.96" stroke="#d93025" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><line x1="12" y1="22.08" x2="12" y2="12" stroke="#d93025" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+            <h3>Storage Clean Up</h3>
+            <p>Analyze your overall account usage deeply and cleanly remove large or unnecessary caches to immediately clear up storage space.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- HOW IT WORKS -->
+    <div class="section" style="padding-top: 64px">
+      <div style="text-align: center; margin-bottom: 36px">
+        <div class="sec-label">How it works</div>
+        <h2>Up and running in 3 steps</h2>
+        <p class="desc" style="margin: 8px auto 0">
+          No technical setup needed. If you use Google Drive, you're already
+          ready.
+        </p>
+      </div>
+      <div class="step-grid">
+        <div class="step-card">
+          <div class="sn">1</div>
+          <h3>Install the App</h3>
+          <p>
+            Download GoPlus Drive from the Google Play Store and open it on your
+            Android device.
+          </p>
+        </div>
+        <div class="step-card">
+          <div class="sn">2</div>
+          <h3>Add Google Accounts</h3>
+          <p>
+            Tap "Add Account" and sign in via secure OAuth. Add as many accounts
+            as you need.
+          </p>
+        </div>
+        <div class="step-card">
+          <div class="sn">3</div>
+          <h3>Use as One Drive</h3>
+          <p>
+            All your storage merges instantly. Upload, browse and share from one
+            single interface.
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- CTA -->
+    <div class="cta-band">
+      <h2>"Your File, Your Storage."</h2>
+      <p>
+        No complexity. No switching tabs. Just your files, on storage you
+        already own.
+      </p>
+      <a
+        href="https://play.google.com/store/apps/details?id=com.plusdrive.app"
+        target="_blank"
+        class="btn btn-white"
+      >
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none">
+          <path
+            d="M3.18 23.76A2 2 0 0 1 2 22V2a2 2 0 0 1 1.18-1.76L14.1 12 3.18 23.76Z"
+            fill="#34A853"
+          />
+          <path d="M14.1 12 3.18.24l13.3 7.68L14.1 12Z" fill="#FBBC04" />
+          <path d="M14.1 12l2.38 4.08-13.3 7.68L14.1 12Z" fill="#EA4335" />
+          <path
+            d="M22 12a2 2 0 0 1-1.12 1.8l-4.4 2.28L14.1 12l2.38-4.08 4.4 2.28A2 2 0 0 1 22 12Z"
+            fill="#4285F4"
+          />
+        </svg>
+        Download on Google Play
+      </a>
+    </div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+      document.addEventListener("DOMContentLoaded", () => {
+        const r = document.getElementById("ringFill");
+        if (r)
+          setTimeout(() => (r.style.strokeDashoffset = 135 - 135 * 0.18), 300);
+      });
+    </script>
+{% endblock %}
