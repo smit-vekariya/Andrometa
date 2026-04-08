@@ -31,7 +31,7 @@ class FileSerializer(BaseModelSerializer):
             'storage_content_type', 'storage_object_id', 'storage_account_repr',
             'file_name', 'file_type', 'mime_type', 'size_bytes',
             'remote_file_id', 'remote_file_path', 'remote_view_url',
-            'local_media_id', 'remote_download_url'
+            'local_media_id', 'remote_download_url',
             'is_active', 'is_deleted', 'created_at', 'updated_at',
             'created_by', 'updated_by',
         ]
