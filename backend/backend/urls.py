@@ -38,5 +38,6 @@ urlpatterns = [
     path('manager/',include("manager.urls")),
     path('qr_admin/',include("qradmin.urls")),
     path('post_office/',include("postoffice.urls")),
+    path('converter/',include("converter.urls")),
 ]+ static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

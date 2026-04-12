@@ -67,6 +67,7 @@ INSTALLED_APPS = [
     'manager',
     'qradmin',
     'postoffice',
+    'converter',
     'django_celery_results',
     'django_celery_beat',
 
