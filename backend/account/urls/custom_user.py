@@ -19,4 +19,5 @@ urlpatterns = [
     path("app_forgot_password/", AppForgotPassword.as_view(), name="app-forgot-password"),
     path("app_verify_forgot_otp/", AppVerifyForgotPasswordOTP.as_view(), name="app-verify-forgot-otp"),
     path("app_reset_password/", AppResetPassword.as_view(), name="app-reset-password"),
+    path("app_google_login/", AppGoogleLogin.as_view(), name="app-google-login"),
 ]

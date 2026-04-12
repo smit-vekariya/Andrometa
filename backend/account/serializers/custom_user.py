@@ -4,6 +4,9 @@ from django.contrib.auth.hashers import make_password
 from account.models import AuthOTP
 from django.utils import timezone
 from core.models import GoogleDriveAccount
+from google.oauth2 import id_token
+from google.auth.transport import requests as google_requests
+from django.conf import settings
 
 
 class CustomUserSerializers(serializers.ModelSerializer):
@@ -159,4 +162,38 @@ class AppResetPasswordSerializer(serializers.Serializer):
             raise serializers.ValidationError({"otp": "Please verify your OTP first."})
 
         attrs["otp_record"] = otp_record
+        return attrs
+
+
+class AppGoogleLoginSerializer(serializers.Serializer):
+    id_token = serializers.CharField()
+
+    def validate_id_token(self, value):
+        try:
+            client_id = getattr(settings, "GOOGLE_CLIENT_ID", None)
+
+            if client_id:
+                idinfo = id_token.verify_oauth2_token(value, google_requests.Request(), client_id)
+            else:
+                idinfo = id_token.verify_oauth2_token(value, google_requests.Request(), audience=None)
+
+            if idinfo['iss'] not in ['accounts.google.com', 'https://accounts.google.com']:
+                raise ValueError('Wrong issuer.')
+
+            return idinfo
+        except ValueError as e:
+            raise serializers.ValidationError(f"Invalid google id_token: {str(e)}")
+
+    def validate(self, attrs):
+        idinfo = attrs.get('id_token')
+        email = idinfo.get('email')
+        if not email:
+            raise serializers.ValidationError("Email not found in google token.")
+
+        email = email.lower().strip()
+        attrs['email'] = email
+        attrs['google_id'] = idinfo.get('sub')
+        attrs['full_name'] = idinfo.get('name', 'Google User')
+        attrs['picture'] = idinfo.get('picture', None)
+
         return attrs
