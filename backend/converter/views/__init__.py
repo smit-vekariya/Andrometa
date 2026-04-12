@@ -14,10 +14,10 @@ CONVERTER_MAP = {
     ('pdf', 'docx'): convert_pdf_to_word,
     ('pdf', 'png'): convert_pdf_to_image,
     # image to pdf converters
-    ('jpeg', 'pdf'): convert_image_to_pdf,
-    ('jpg', 'pdf'): convert_image_to_pdf,
-    ('png', 'pdf'): convert_image_to_pdf,
-    ('webp', 'pdf'): convert_image_to_pdf,
+    ('jpeg', 'pdf'): convert_image_to_pdf, #support multiple images
+    ('jpg', 'pdf'): convert_image_to_pdf, #support multiple images
+    ('png', 'pdf'): convert_image_to_pdf, #support multiple images
+    ('webp', 'pdf'): convert_image_to_pdf, #support multiple images
     # image converters
     ('jpeg', 'png'): convert_jpeg_to_png,
     ('jpeg', 'webp'): convert_image_to_webp,

@@ -70,6 +70,7 @@ INSTALLED_APPS = [
     'converter',
     'django_celery_results',
     'django_celery_beat',
+    'compressor',
 
 ]
 
