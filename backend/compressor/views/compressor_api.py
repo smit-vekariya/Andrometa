@@ -35,23 +35,11 @@ class ImageCompressorView(APIView):
                     first_error_msg = str(errors[first_error_key])
                 return HttpsAppResponse.send([], 0, str(first_error_msg))
 
-            files = request.FILES.getlist('file')
-            if not files:
-                return HttpsAppResponse.send([], 0, "At least one file is required.")
-
-            # Validate all files are supported images
-            for file in files:
-                try:
-                    file.seek(0)
-                    Image.open(file).verify()
-                except Exception:
-                    return HttpsAppResponse.send([], 0, f"Unsupported file uploaded: {file.name}. Please upload valid images.")
-                finally:
-                    file.seek(0)
-
-            mode = serializer.validated_data['mode']
-            value = serializer.validated_data.get('value', None)
-            unit = serializer.validated_data.get('unit', 'KB')
+            validated_data = serializer.validated_data
+            files = validated_data['file']
+            mode = validated_data['mode']
+            value = validated_data.get('value', None)
+            unit = validated_data.get('unit', 'KB')
 
             output_buffer, output_filename, content_type = compress_image(files, mode, value, unit)
 
