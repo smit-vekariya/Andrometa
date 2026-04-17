@@ -40,5 +40,6 @@ urlpatterns = [
     path('post_office/',include("postoffice.urls")),
     path('converter/',include("converter.urls")),
     path('compressor/',include("compressor.urls")),
-]+ static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+    path('merger/',include("merger.urls")),
+] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
