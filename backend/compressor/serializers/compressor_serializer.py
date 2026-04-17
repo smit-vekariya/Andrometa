@@ -28,8 +28,8 @@ class CompressionSerializer(serializers.Serializer):
 
         # Check combined size
         total_size = sum(file.size for file in value)
-        if total_size > settings.DATA_UPLOAD_MAX_MEMORY_SIZE:
-            limit_mb = settings.DATA_UPLOAD_MAX_MEMORY_SIZE / (1024 * 1024)
+        if total_size > settings.COMPRESSOR_DATA_UPLOAD_MAX_MEMORY_SIZE:
+            limit_mb = settings.COMPRESSOR_DATA_UPLOAD_MAX_MEMORY_SIZE / (1024 * 1024)
             raise serializers.ValidationError(f"Total size of all files exceeds the allowed limit of {limit_mb:.1f}MB.")
 
         # Check each file is a valid image
