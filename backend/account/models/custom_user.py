@@ -43,6 +43,12 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
     created_on = models.DateTimeField(auto_now_add=True)
     profile = models.ImageField(upload_to=upload_location, null=True, blank=True)
     password = models.CharField(max_length=200, null=True, blank=True)
+    google_id = models.CharField(max_length=255, null=True, blank=True)
+    auth_provider = models.CharField(
+        max_length=20,
+        choices=[("email", "email"), ("google", "google")],
+        default="email"
+    )
     is_deleted = models.BooleanField(default=False)
     is_app_user = models.BooleanField(default=False)
     is_active = models.BooleanField(default=True)

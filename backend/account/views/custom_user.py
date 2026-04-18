@@ -1,7 +1,7 @@
 
 import logging
 from rest_framework.views import APIView
-from account.serializers import CustomUserSerializers, CustomUserListSerializers, CustomUserProfileSerializers, AppForgotPasswordSerializer, AppVerifyForgotPasswordOTPSerializer, AppResetPasswordSerializer
+from account.serializers import CustomUserSerializers, CustomUserListSerializers, CustomUserProfileSerializers, AppForgotPasswordSerializer, AppVerifyForgotPasswordOTPSerializer, AppResetPasswordSerializer, AppGoogleLoginSerializer
 from account.models import CustomUser
 from account.backends import AdminLoginBackend, AppLoginBackend
 from manager import manager
@@ -212,5 +212,48 @@ class AppResetPassword(APIView):
 
             otp_record.delete()
             return HttpsAppResponse.send([], 1, "Password reset successfully.")
+        except Exception as e:
+            return HttpsAppResponse.exception(str(e))
+
+
+class AppGoogleLogin(APIView):
+    authentication_classes = []
+    permission_classes = []
+
+    def post(self, request):
+        try:
+            serializer = AppGoogleLoginSerializer(data=request.data)
+            if not serializer.is_valid():
+                return HttpsAppResponse.send([], 0, custom_response_errors(serializer.errors))
+
+            email = serializer.validated_data["email"]
+            google_id = serializer.validated_data["google_id"]
+            full_name = serializer.validated_data["full_name"]
+            
+            # Check if user exists
+            user_qs = CustomUser.objects.filter(email=email)
+            if user_qs.exists():
+                user = user_qs.first()
+                if user.auth_provider != "google":
+                    return HttpsAppResponse.send([], 0, f"Email already registered using {user.auth_provider}. Please login using your existing method.")
+                
+                # Update google_id just in case it changed or wasn't set (though normally it should be set)
+                if user.google_id != google_id:
+                    user.google_id = google_id
+                    user.save()
+            else:
+                # Create user
+                user = CustomUser.objects.create(
+                    email=email,
+                    full_name=full_name,
+                    google_id=google_id,
+                    auth_provider="google",
+                    is_app_user=True,
+                    is_active=True
+                )
+            
+            tokens = MyTokenObtainPairSerializer.get_token(user)
+            return HttpsAppResponse.send([{"access": tokens._cached_access_token_str, "refresh": str(tokens)}], 1, "Login successful.")
+
         except Exception as e:
             return HttpsAppResponse.exception(str(e))
