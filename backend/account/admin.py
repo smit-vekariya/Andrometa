@@ -1,5 +1,5 @@
 from django.contrib import admin
-from account.models import MainMenu, CustomUser, State, City, UserToken, AuthOTP, AppInfo, AppReport
+from account.models import MainMenu, CustomUser, State, City, UserToken, AuthOTP, AppInfo, AppReport, ContactUs
 
 # Register your models here.
 
@@ -41,3 +41,11 @@ class AppInfoAdmin(admin.ModelAdmin):
 @admin.register(AppReport)
 class AppReportAdmin(admin.ModelAdmin):
     list_display = ('device_id', 'device_name', 'first_login_date', 'last_login_date')
+
+
+@admin.register(ContactUs)
+class ContactUsAdmin(admin.ModelAdmin):
+    list_display = ('first_name', 'last_name', 'email', 'subject', 'created_at')
+    list_filter = ('subject', 'created_at')
+    search_fields = ('first_name', 'last_name', 'email', 'message')
+    readonly_fields = ('created_at',)

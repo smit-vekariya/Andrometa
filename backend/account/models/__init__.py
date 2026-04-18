@@ -4,3 +4,4 @@ from .main_menu import MainMenu
 from .plan import Plan
 from .subscription import UserSubscription
 from .app_info import AppInfo, AppReport
+from .contact_us import ContactUs
