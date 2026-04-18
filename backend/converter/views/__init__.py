@@ -12,25 +12,25 @@ CONVERTER_MAP = {
     ('pdf', 'docx'): convert_pdf_to_word,
     ('pdf', 'png'): convert_pdf_to_image,
     ('pdf', 'txt'): convert_pdf_to_txt,
-    
+
     # jpeg converters
     ('jpeg', 'pdf'): convert_image_to_pdf,
     ('jpeg', 'png'): convert_image_to_png,
     ('jpeg', 'webp'): convert_image_to_webp,
     ('jpeg', 'jpg'): convert_image_to_jpeg,
-    
+
     # jpg converters
     ('jpg', 'png'): convert_image_to_png,
     ('jpg', 'pdf'): convert_image_to_pdf,
     ('jpg', 'webp'): convert_image_to_webp,
     ('jpg', 'jpeg'): convert_image_to_jpeg,
-    
+
     # png converters
     ('png', 'pdf'): convert_image_to_pdf,
     ('png', 'jpeg'): convert_image_to_jpeg,
     ('png', 'jpg'): convert_image_to_jpeg,
     ('png', 'webp'): convert_image_to_webp,
-    
+
     # webp converters
     ('webp', 'pdf'): convert_image_to_pdf,
     ('webp', 'jpeg'): convert_image_to_jpeg,
@@ -60,7 +60,10 @@ CONVERTER_MAP = {
 }
 
 AVAILABLE_FORMATS = {
+    # pdf
     "pdf": ["docx", "png", "txt"],
+    
+    # images
     "jpeg": ["pdf", "png", "webp", "jpg"],
     "jpg": ["pdf", "png", "webp", "jpeg"],
     "png": ["pdf", "jpeg", "jpg", "webp"],
