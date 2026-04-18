@@ -3,15 +3,15 @@ from converter.views import CONVERTER_MAP
 
 class FileConversionSerializer(serializers.Serializer):
     file = serializers.FileField(
-        required=True, 
+        required=True,
         error_messages={'required': 'File is required.', 'empty': 'File is required.', 'no_name': 'File is required.'}
     )
     file_type_from = serializers.CharField(
-        required=True, 
+        required=True,
         error_messages={'required': 'file_type_from is required.', 'blank': 'file_type_from is required.'}
     )
     file_type_to = serializers.CharField(
-        required=True, 
+        required=True,
         error_messages={'required': 'file_type_to is required.', 'blank': 'file_type_to is required.'}
     )
 
@@ -37,3 +37,9 @@ class FileConversionSerializer(serializers.Serializer):
             )
 
         return attrs
+
+class FormatCheckSerializer(serializers.Serializer):
+    file_type = serializers.CharField(
+        required=True, 
+        error_messages={'required': 'file_type is required.', 'blank': 'file_type is required.'}
+    )
