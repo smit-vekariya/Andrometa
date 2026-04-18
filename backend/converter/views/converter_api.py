@@ -23,7 +23,7 @@ class FileConverterView(APIView):
 
     def post(self, request):
         try:
-            serializer = FileConversionSerializer(data=request.data)
+            serializer = FileConversionSerializer(data=request.data, context={'request': request})
             if not serializer.is_valid():
                 errors = serializer.errors
                 # Extract the first error message formatted as a string
@@ -31,11 +31,7 @@ class FileConverterView(APIView):
                 first_error_msg = errors[first_error_key][0]
                 return HttpsAppResponse.send([], 0, str(first_error_msg))
 
-            files = request.FILES.getlist('file')
-            if len(files) > 1:
-                return HttpsAppResponse.send([], 0, "Only one file is allowed.")
-
-            file = files[0]
+            file = serializer.validated_data['file']
             file_type_from = serializer.validated_data['file_type_from']
             file_type_to = serializer.validated_data['file_type_to']
 

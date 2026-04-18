@@ -66,3 +66,26 @@ def convert_pdf_to_image(file):
         zip_buffer.seek(0)
         output_filename = f"{original_name}_images.zip"
         return zip_buffer, output_filename, 'application/zip'
+
+
+def convert_pdf_to_txt(file):
+    """
+    Extract text content from a PDF file using PyMuPDF (fitz).
+    Returns a tuple of (file_bytes, output_filename, content_type).
+    """
+    original_name = os.path.splitext(file.name)[0]
+    output_filename = f"{original_name}.txt"
+
+    pdf_bytes = file.read()
+    doc = fitz.open("pdf", pdf_bytes)
+
+    full_text = ""
+    for page in doc:
+        full_text += page.get_text()
+
+    doc.close()
+
+    output_buffer = io.BytesIO(full_text.encode('utf-8'))
+    output_buffer.seek(0)
+
+    return output_buffer, output_filename, 'text/plain'
