@@ -45,6 +45,11 @@
           >Home</a
         >
         <a
+          class="nl {% if request.path == '/features/' %}active{% endif %}"
+          href="{% url 'features' %}"
+          >Features</a
+        >
+        <a
           class="nl {% if request.path == '/privacy/' %}active{% endif %}"
           href="{% url 'privacy' %}"
           >Privacy</a

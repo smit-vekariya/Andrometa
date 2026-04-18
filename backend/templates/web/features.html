@@ -1,0 +1,34 @@
+{% extends 'web/base.html' %}
+{% load static %}
+
+{% block title %}Features - GoPlus Drive{% endblock %}
+
+{% block content %}
+    <!-- PAGE HEADER -->
+    <div class="pg-head">
+      <div class="breadcrumb"><a href="{% url 'home' %}">Home</a> / Features</div>
+      <h1>Powerful Utilities & Features</h1>
+      <p>Explore the full potential of GoPlus Drive and the BIG 4C suite.</p>
+    </div>
+
+    <!-- BIG 4C UTILITIES -->
+    {% include 'web/includes/_utilities.html' %}
+
+    <!-- FEATURE GRID -->
+    {% include 'web/includes/_features_grid.html' %}
+
+    <!-- CTA -->
+    <div class="cta-band">
+      <h2>"Your File, Your Storage."</h2>
+      <p>Experience the most powerful cloud management tool ever built for Android.</p>
+      <a href="https://play.google.com/store/apps/details?id=com.plusdrive.app" target="_blank" class="btn btn-white">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none">
+          <path d="M3.18 23.76A2 2 0 0 1 2 22V2a2 2 0 0 1 1.18-1.76L14.1 12 3.18 23.76Z" fill="#34A853"/>
+          <path d="M14.1 12 3.18.24l13.3 7.68L14.1 12Z" fill="#FBBC04"/>
+          <path d="M14.1 12l2.38 4.08-13.3 7.68L14.1 12Z" fill="#EA4335"/>
+          <path d="M22 12a2 2 0 0 1-1.12 1.8l-4.4 2.28L14.1 12l2.38-4.08 4.4 2.28A2 2 0 0 1 22 12Z" fill="#4285F4"/>
+        </svg>
+        Download on Google Play
+      </a>
+    </div>
+{% endblock %}

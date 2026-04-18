@@ -11,3 +11,6 @@ class Terms(TemplateView):
 
 class Contact(TemplateView):
     template_name = "web/contact.html"
+
+class Features(TemplateView):
+    template_name = "web/features.html"
