@@ -1,10 +1,15 @@
-from .pdf_converter import convert_pdf_to_word, convert_pdf_to_image, convert_pdf_to_txt
+from .pdf_converter import convert_pdf_to_word, convert_pdf_to_image, convert_pdf_to_txt, convert_pdf_to_jpeg
 from .image_to_pdf import convert_image_to_pdf
 from .image_converter import (
     convert_image_to_png,
     convert_image_to_jpeg,
     convert_image_to_webp,
 )
+import pillow_heif
+
+# Register HEIC opener for Pillow so that Image.open can read iPhone HEIC format natively
+pillow_heif.register_heif_opener()
+
 
 # Dispatch map: (file_type_from, file_type_to) -> converter function
 CONVERTER_MAP = {
@@ -12,6 +17,8 @@ CONVERTER_MAP = {
     ('pdf', 'docx'): convert_pdf_to_word,
     ('pdf', 'png'): convert_pdf_to_image,
     ('pdf', 'txt'): convert_pdf_to_txt,
+    ('pdf', 'jpeg'): convert_pdf_to_jpeg,
+    ('pdf', 'jpg'): convert_pdf_to_jpeg,
 
     # jpeg converters
     ('jpeg', 'pdf'): convert_image_to_pdf,
@@ -57,12 +64,19 @@ CONVERTER_MAP = {
     ('gif', 'jpg'): convert_image_to_jpeg,
     ('gif', 'png'): convert_image_to_png,
     ('gif', 'webp'): convert_image_to_webp,
+
+    # heic converters (high-demand iPhone format)
+    ('heic', 'pdf'): convert_image_to_pdf,
+    ('heic', 'jpeg'): convert_image_to_jpeg,
+    ('heic', 'jpg'): convert_image_to_jpeg,
+    ('heic', 'png'): convert_image_to_png,
+    ('heic', 'webp'): convert_image_to_webp,
 }
 
 AVAILABLE_FORMATS = {
     # pdf
-    "pdf": ["docx", "png", "txt"],
-    
+    "pdf": ["docx", "png", "txt", "jpg", "jpeg"],
+
     # images
     "jpeg": ["pdf", "png", "webp", "jpg"],
     "jpg": ["pdf", "png", "webp", "jpeg"],
@@ -71,6 +85,7 @@ AVAILABLE_FORMATS = {
     "bmp": ["pdf", "jpeg", "jpg", "png", "webp"],
     "tiff": ["pdf", "jpeg", "jpg", "png", "webp"],
     "gif": ["pdf", "jpeg", "jpg", "png", "webp"],
+    "heic": ["pdf", "jpeg", "jpg", "png", "webp"],
 }
 
 __all__ = [
@@ -78,6 +93,7 @@ __all__ = [
     'AVAILABLE_FORMATS',
     'convert_pdf_to_word',
     'convert_pdf_to_image',
+    'convert_pdf_to_jpeg',
     'convert_pdf_to_txt',
     'convert_image_to_pdf',
     'convert_image_to_png',

@@ -68,6 +68,36 @@ def convert_pdf_to_image(file):
         return zip_buffer, output_filename, 'application/zip'
 
 
+def convert_pdf_to_jpeg(file):
+    """
+    Convert a PDF file to JPEG images using PyMuPDF (fitz).
+    If single page, returns a JPEG. If multi-page, returns a ZIP of JPEGs.
+    Returns a tuple of (file_bytes, output_filename, content_type).
+    """
+    original_name = os.path.splitext(file.name)[0]
+    pdf_bytes = file.read()
+
+    doc = fitz.open("pdf", pdf_bytes)
+
+    if len(doc) == 1:
+        page = doc.load_page(0)
+        pix = page.get_pixmap(dpi=150)
+        output_buffer = io.BytesIO(pix.tobytes("jpeg"))
+        output_filename = f"{original_name}.jpg"
+        return output_buffer, output_filename, 'image/jpeg'
+    else:
+        zip_buffer = io.BytesIO()
+        with zipfile.ZipFile(zip_buffer, 'w', zipfile.ZIP_DEFLATED) as zip_file:
+            for index in range(len(doc)):
+                page = doc.load_page(index)
+                pix = page.get_pixmap(dpi=150) # use a decent dpi
+                zip_file.writestr(f"{original_name}_page_{index + 1}.jpg", pix.tobytes("jpeg"))
+
+        zip_buffer.seek(0)
+        output_filename = f"{original_name}_images.zip"
+        return zip_buffer, output_filename, 'application/zip'
+
+
 def convert_pdf_to_txt(file):
     """
     Extract text content from a PDF file using PyMuPDF (fitz).
