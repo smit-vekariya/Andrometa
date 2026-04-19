@@ -1,3 +1,3 @@
-from .compressor_serializer import CompressionSerializer
+from .compressor import CompressionSerializer
 
 __all__ = ['CompressionSerializer']

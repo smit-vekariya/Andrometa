@@ -52,9 +52,3 @@ class FileConversionSerializer(serializers.Serializer):
             )
 
         return attrs
-
-class FormatCheckSerializer(serializers.Serializer):
-    file_type = serializers.CharField(
-        required=True, 
-        error_messages={'required': 'file_type is required.', 'blank': 'file_type is required.'}
-    )

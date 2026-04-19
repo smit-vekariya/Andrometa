@@ -1,3 +1,3 @@
-from .converter_serializer import FileConversionSerializer, FormatCheckSerializer
+from .converter import FileConversionSerializer
 
-__all__ = ['FileConversionSerializer', 'FormatCheckSerializer']
+__all__ = ['FileConversionSerializer']

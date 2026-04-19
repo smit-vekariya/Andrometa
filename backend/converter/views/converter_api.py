@@ -5,7 +5,7 @@ from account.permissions import IsAuthenticatedOrHasDeviceID
 from django.http import FileResponse
 from manager.manager import HttpsAppResponse
 from converter.views import CONVERTER_MAP, AVAILABLE_FORMATS
-from converter.serializers import FileConversionSerializer, FormatCheckSerializer
+from converter.serializers import FileConversionSerializer
 
 
 class FileConverterView(APIView):
@@ -66,19 +66,15 @@ class CheckAvailabilityView(APIView):
     """
     permission_classes = [IsAuthenticatedOrHasDeviceID]
 
-    def post(self, request):
+    def get(self, request):
         try:
-            serializer = FormatCheckSerializer(data=request.data)
-            if not serializer.is_valid():
-                errors = serializer.errors
-                first_error_key = next(iter(errors))
-                first_error_msg = errors[first_error_key][0]
-                return HttpsAppResponse.send([], 0, str(first_error_msg))
-
-            file_type = serializer.validated_data['file_type'].strip().lower()
-            supported_targets = AVAILABLE_FORMATS.get(file_type, [])
+            file_type = request.query_params.get("file_type")
+            if file_type:
+                file_type = file_type.strip().lower()
+                supported_targets = AVAILABLE_FORMATS.get(file_type, [])
+            else:
+                supported_targets = AVAILABLE_FORMATS
 
             return HttpsAppResponse.send(supported_targets, 1, "Success")
-
         except Exception as e:
             return HttpsAppResponse.exception(str(e))

@@ -1,3 +1,3 @@
-from .merger_serializer import PDFMergerSerializer
+from .merger import PDFMergerSerializer
 
 __all__ = ['PDFMergerSerializer']
