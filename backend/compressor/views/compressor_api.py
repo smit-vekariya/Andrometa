@@ -5,6 +5,7 @@ from account.permissions import IsAuthenticatedOrHasDeviceID
 from django.http import FileResponse
 from manager.manager import HttpsAppResponse
 from compressor.serializers import CompressionSerializer
+from compressor.views import COMPRESSOR_FORMATS
 from compressor.views.image_compressor import compress_image
 from PIL import Image
 
@@ -54,3 +55,27 @@ class ImageCompressorView(APIView):
 
         except Exception as e:
             return HttpsAppResponse.exception(str(e))
+
+class CheckAvailabilityView(APIView):
+    """
+    API endpoint to check supported formats for compressor.
+
+    GET /compressor/availability/
+    - file_type: (optional) The source file format to check.
+
+    Returns a list of supported formats or a boolean if specific format is requested.
+    """
+    permission_classes = [IsAuthenticatedOrHasDeviceID]
+
+    def get(self, request):
+        try:
+            file_type = request.query_params.get("file_type")
+            if file_type:
+                file_type = file_type.strip().lower()
+                supported_targets = COMPRESSOR_FORMATS.get(file_type, [])
+            else:
+                supported_targets = COMPRESSOR_FORMATS
+            return HttpsAppResponse.send(supported_targets, 1, "Success")
+        except Exception as e:
+            return HttpsAppResponse.exception(str(e))
+

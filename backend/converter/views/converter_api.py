@@ -4,7 +4,7 @@ from rest_framework.permissions import IsAuthenticated
 from account.permissions import IsAuthenticatedOrHasDeviceID
 from django.http import FileResponse
 from manager.manager import HttpsAppResponse
-from converter.views import CONVERTER_MAP, AVAILABLE_FORMATS
+from converter.views import CONVERTER_MAP, CONVERTER_FORMATS
 from converter.serializers import FileConversionSerializer
 
 
@@ -71,9 +71,9 @@ class CheckAvailabilityView(APIView):
             file_type = request.query_params.get("file_type")
             if file_type:
                 file_type = file_type.strip().lower()
-                supported_targets = AVAILABLE_FORMATS.get(file_type, [])
+                supported_targets = CONVERTER_FORMATS.get(file_type, [])
             else:
-                supported_targets = AVAILABLE_FORMATS
+                supported_targets = CONVERTER_FORMATS
 
             return HttpsAppResponse.send(supported_targets, 1, "Success")
         except Exception as e:

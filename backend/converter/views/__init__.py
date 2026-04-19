@@ -73,7 +73,7 @@ CONVERTER_MAP = {
     ('heic', 'webp'): convert_image_to_webp,
 }
 
-AVAILABLE_FORMATS = {
+CONVERTER_FORMATS = {
     # pdf
     "pdf": ["docx", "png", "txt", "jpg", "jpeg"],
 
@@ -90,7 +90,7 @@ AVAILABLE_FORMATS = {
 
 __all__ = [
     'CONVERTER_MAP',
-    'AVAILABLE_FORMATS',
+    'CONVERTER_FORMATS',
     'convert_pdf_to_word',
     'convert_pdf_to_image',
     'convert_pdf_to_jpeg',
