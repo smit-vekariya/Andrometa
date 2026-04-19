@@ -1,6 +1,7 @@
 from rest_framework.views import APIView
 from rest_framework.parsers import MultiPartParser, FormParser
 from rest_framework.permissions import IsAuthenticated
+from account.permissions import IsAuthenticatedOrHasDeviceID
 from django.http import FileResponse
 from manager.manager import HttpsAppResponse
 from converter.views import CONVERTER_MAP, AVAILABLE_FORMATS
@@ -19,7 +20,7 @@ class FileConverterView(APIView):
     Returns the converted file as a downloadable response.
     """
     parser_classes = [MultiPartParser, FormParser]
-    permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticatedOrHasDeviceID]
 
     def post(self, request):
         try:
@@ -63,7 +64,7 @@ class CheckAvailabilityView(APIView):
 
     Returns a list of supported target formats.
     """
-    permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticatedOrHasDeviceID]
 
     def post(self, request):
         try:

@@ -1,6 +1,7 @@
 from rest_framework.views import APIView
 from rest_framework.parsers import MultiPartParser, FormParser
 from rest_framework.permissions import IsAuthenticated
+from account.permissions import IsAuthenticatedOrHasDeviceID
 from django.http import FileResponse
 from manager.manager import HttpsAppResponse
 from compressor.serializers import CompressionSerializer
@@ -21,7 +22,7 @@ class ImageCompressorView(APIView):
     Returns the compressed file(s) as a downloadable response.
     """
     parser_classes = [MultiPartParser, FormParser]
-    permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticatedOrHasDeviceID]
 
     def post(self, request):
         try:
