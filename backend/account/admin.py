@@ -40,4 +40,4 @@ class AppInfoAdmin(admin.ModelAdmin):
 
 @admin.register(AppReport)
 class AppReportAdmin(admin.ModelAdmin):
-    list_display = ('device_id', 'device_name', 'first_login_date', 'last_login_date')
+    list_display = ('device_id', 'device_name', 'first_login_date', 'last_login_date', 'meta_data')
