@@ -40,4 +40,16 @@ class AppInfoAdmin(admin.ModelAdmin):
 
 @admin.register(AppReport)
 class AppReportAdmin(admin.ModelAdmin):
-    list_display = ('device_id', 'device_name', 'first_login_date', 'last_login_date', 'meta_data')
+    list_display = ('device_id', 'device_name', 'first_login_date', 'last_login_date', 'app_open_count')
+    list_filter = ('device_name', 'first_login_date', 'last_login_date', 'app_open_count')
+    search_fields = ('device_id', 'device_name', 'first_login_date', 'last_login_date', 'app_open_count')
+    readonly_fields = ('first_login_date', 'last_login_date', 'app_open_count')
+
+
+
+@admin.register(ContactUs)
+class ContactUsAdmin(admin.ModelAdmin):
+    list_display = ('first_name', 'last_name', 'email', 'subject', 'created_at')
+    list_filter = ('subject', 'created_at')
+    search_fields = ('first_name', 'last_name', 'email', 'message')
+    readonly_fields = ('created_at',)

@@ -19,6 +19,7 @@ class AppReport(models.Model):
     first_login_date = models.DateTimeField(default=datetime.now, null=True, blank=True)
     last_login_date = models.DateTimeField(default=datetime.now, null=True, blank=True)
     meta_data = models.JSONField(default=dict, null=True, blank=True)
+    app_open_count = models.IntegerField(default=1, null=True, blank=True)
 
     def __str__(self):
         return str(self.device_id)

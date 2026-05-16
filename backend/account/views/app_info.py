@@ -27,6 +27,7 @@ class AppInfoView(APIView):
                 report.last_login_date = datetime.now()
                 if meta_data:
                     report.meta_data = meta_data
+                report.app_open_count = (report.app_open_count or 1) + 1
                 report.save()
 
             serializer = AppInfoSerializer(device_info)
